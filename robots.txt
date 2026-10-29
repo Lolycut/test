@@ -1,0 +1,16 @@
+# ИЗЮМ — izum-home.by
+User-agent: *
+Allow: /
+Disallow: /offline.html
+Disallow: /404.html
+Disallow: /*?source=
+Disallow: /constructor.html?
+
+# Яндекс: склеить адреса с метками в канонический
+User-agent: Yandex
+Allow: /
+Disallow: /offline.html
+Disallow: /404.html
+Clean-param: source&model&len&depth&fabric&color&fill&legs&sleeper&box&pillows /
+
+Sitemap: https://izum-home.by/sitemap.xml

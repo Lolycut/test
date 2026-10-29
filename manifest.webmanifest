@@ -1,0 +1,33 @@
+{
+  "id": "/",
+  "name": "ИЗЮМ — мягкая мебель на заказ",
+  "short_name": "ИЗЮМ",
+  "description": "Каталог диванов, конструктор с ценой и заявка в салон ИЗЮМ, Минск.",
+  "lang": "ru",
+  "dir": "ltr",
+  "start_url": "/index.html?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#EFEBE6",
+  "theme_color": "#095562",
+  "categories": ["shopping", "lifestyle"],
+  "icons": [
+    { "src": "/assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/assets/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Собрать диван", "short_name": "Конструктор", "url": "/constructor.html?source=pwa",
+      "icons": [{ "src": "/assets/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Каталог", "url": "/catalog.html?source=pwa",
+      "icons": [{ "src": "/assets/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Контакты и заявка", "short_name": "Контакты", "url": "/contacts.html?source=pwa",
+      "icons": [{ "src": "/assets/icons/icon-192.png", "sizes": "192x192" }] }
+  ],
+  "screenshots": [
+    { "src": "/assets/img/og.jpg", "sizes": "1200x630", "type": "image/jpeg", "form_factor": "wide", "label": "ИЗЮМ — мягкая мебель на заказ" }
+  ]
+}
