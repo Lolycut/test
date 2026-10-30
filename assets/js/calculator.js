@@ -31,7 +31,7 @@
   if (cfg && cfg.total) {
     sum.value = cfg.total;
     $('#k-from').hidden = false;
-    $('#k-from').textContent = 'Подставлена цена из конструктора: ' + cfg.summary.split('.')[0] + '.';
+    $('#k-from').textContent = 'Выбрана модель: ' + cfg.summary.split('.')[0] + '.';
   }
 
   function chips(box, items, key) {
@@ -65,6 +65,7 @@
     var fp = +first.value;
     first.style.setProperty('--p', (fp / 50 * 100) + '%');
     $('#o-first').textContent = fp + '%';
+    $$('[data-first-pct]').forEach(function (b) { b.classList.toggle('on', +b.getAttribute('data-first-pct') === fp); });
     var term = C.terms.find(function (t) { return t.months === state.term; });
     var zone = C.delivery.find(function (d) { return d.id === state.zone; });
     var fl = Math.max(1, +floor.value || 1);
@@ -89,6 +90,12 @@
     });
   }
   [sum, first, floor].forEach(function (el) { el.addEventListener('input', calc); });
+  document.addEventListener('click', function (e) {
+    var pb = e.target.closest('[data-first-pct]');
+    if (!pb || !first) return;
+    first.value = pb.getAttribute('data-first-pct');
+    calc();
+  });
   calc();
 
   var dW = $('#d-w'), dH = $('#d-h'), sD = $('#s-d'), sH = $('#s-h');

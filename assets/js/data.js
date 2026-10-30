@@ -1,4 +1,4 @@
-/* ИЗЮМ — данные компании (ООО «АЛБРО»), каталога (Диваны, Кресла, Кровати) и прайс-коэффициенты. */
+/* ИЗЮМ — данные компании (ООО «АЛБРО»), каталога (Диваны, Кровати, Кресла, Стулья), прайс-листа и раздела «Наши работы». */
 
 window.IZYUM = window.IZYUM || {};
 
@@ -17,91 +17,116 @@ IZYUM.SITE = {
   phoneHref: 'tel:+375296709784',
   email: 'info@izum-home.by',
   hours: 'Ежедневно, 10:00–21:00 (ТЦ «Корона Дом»)',
-  /* Серверный обработчик для отправки писем на доменную почту hoster.by и получения в K-9 Mail */
-  leadEndpoint: 'api/lead.php'
+  leadEndpoint: 'api/lead.php',
+  gaMeasurementId: ''
 };
 
 IZYUM.CATEGORIES = [
-  { id: 'all',       name: 'Все модели', kindLabel: 'ВСЕ' },
-  { id: 'sofas',     name: 'Диваны',     kindLabel: 'ДИВАН' },
-  { id: 'armchairs', name: 'Кресла',     kindLabel: 'КРЕСЛО' },
-  { id: 'beds',      name: 'Кровати',    kindLabel: 'КРОВАТЬ' }
+  { id: 'all',       name: 'Все категории', kindLabel: 'ВСЕ' },
+  { id: 'sofas',     name: 'Диваны',        kindLabel: 'ДИВАН' },
+  { id: 'beds',      name: 'Кровати',       kindLabel: 'КРОВАТЬ' },
+  { id: 'armchairs', name: 'Кресла',        kindLabel: 'КРЕСЛО' },
+  { id: 'chairs',    name: 'Стулья',        kindLabel: 'СТУЛ' }
 ];
 
-/* Каталог моделей:
-   cat: 'sofas' | 'armchairs' | 'beds'
-   shape: форма в SVG-конструкторе ('slim', 'puffy', 'block', 'chair', 'round', 'bed') */
+/* Модели с фотографиями и рендерами для витрины и карточек каталога */
 IZYUM.MODELS = [
-  /* ---------- ДИВАНЫ ---------- */
+  /* ---------- ДИВАНЫ (база 2400 мм) ---------- */
   {
-    id: 'reflex', cat: 'sofas', kind: 'ДИВАН', name: 'Reflex', price: 4240,
-    baseDim: '2400 × 980 мм', minLen: 1600, maxLen: 3200, defLen: 2400,
-    shape: 'slim', legs: 'metal', img: 'assets/img/reflex.webp',
-    note: 'Прямые подлокотники, тонкие металлические ножки и глубокая выверенная посадка.',
-    tags: ['Раскладка', 'Любой размер', 'Высокие ножки'], sleeper: true
+    id: 'noah', cat: 'sofas', kind: 'ДИВАН', name: 'Noah', price: 3400,
+    baseDim: '2400 мм', img: 'assets/img/work-noah.webp',
+    note: 'Уютный модульный и прямой диван с мягкими подушками спинки и глубокой посадкой.',
+    tags: ['2400 мм в базе', 'Прямой / Угловой', 'Индивидуальный размер']
   },
   {
-    id: 'krisby', cat: 'sofas', kind: 'ДИВАН', name: 'Krisby', price: 3960,
-    baseDim: '2400 × 950 мм', minLen: 1600, maxLen: 3200, defLen: 2400,
-    shape: 'slim', legs: 'metal', img: 'assets/img/krisby.webp',
-    note: 'Лёгкий силуэт на высоких ножках — удобно для робота-пылесоса. На фото в экокоже.',
-    tags: ['Под робот-пылесос', 'Раскладка', 'Экокожа / Ткань'], sleeper: true, tall: true
+    id: 'lema', cat: 'sofas', kind: 'ДИВАН', name: 'Lema', price: 3560,
+    baseDim: '2400 мм', img: 'assets/img/work-lema.webp',
+    altImg: 'assets/img/work-lema-corner.webp',
+    variants: [
+      { label: 'Прямой', img: 'assets/img/work-lema.webp' },
+      { label: 'Угловой с шезлонгом', img: 'assets/img/work-lema-corner.webp' }
+    ],
+    note: 'Элегантный диван на высоких тонких опорах — доступен в прямой и угловой конфигурации.',
+    tags: ['2400 мм в базе', 'Под робот-пылесос', 'Прямой и угловой']
   },
   {
     id: 'ff', cat: 'sofas', kind: 'ДИВАН', name: 'FF', price: 3820,
-    baseDim: '2400 × 1050 мм', minLen: 1800, maxLen: 3400, defLen: 2400,
-    shape: 'block', legs: 'hidden', img: 'assets/img/ff.webp',
-    note: 'Модульный угловой диван без видимых ножек, глубокие мягкие блоки для лаунж-зоны.',
-    tags: ['Модульный', 'Угловые схемы', 'Глубокая посадка'], chaise: true
-  },
-  {
-    id: 'cloud', cat: 'sofas', kind: 'ДИВАН', name: 'Cloud', price: 3920,
-    baseDim: '2400 × 1050 мм', minLen: 1600, maxLen: 3200, defLen: 2400,
-    shape: 'puffy', legs: 'hidden', img: 'assets/img/cloud.webp',
-    note: 'Объёмные подушки с пух-пером и скруглённые формы — обволакивающий комфорт как на облаке.',
-    tags: ['Хит продаж', 'Мягкая посадка', 'Раскладка'], sleeper: true
-  },
-  {
-    id: 'reverse', cat: 'sofas', kind: 'ДИВАН', name: 'Reverse', price: 5870,
-    baseDim: '2400 × 1000 мм', minLen: 1800, maxLen: 3200, defLen: 2400,
-    shape: 'puffy', legs: 'metal', img: 'assets/img/reverse.webp',
-    note: 'Двусторонние подушки со свободными чехлами и декоративным кантом на тонкой опоре.',
-    tags: ['Премиум-крой', 'Контрастный кант', 'Тонкая опора']
+    baseDim: '2400 мм', img: 'assets/img/ff.webp',
+    note: 'Модульный диван без видимых ножек, глубокие мягкие блоки для современной гостиной.',
+    tags: ['2400 мм в базе', 'Модульный', 'Угловые схемы']
   },
   {
     id: 'fly', cat: 'sofas', kind: 'ДИВАН', name: 'Fly', price: 3820,
-    baseDim: '2400 × 1050 мм', minLen: 1600, maxLen: 3200, defLen: 2400,
-    shape: 'block', legs: 'hidden', img: 'assets/img/fly.webp',
-    note: 'Модули с низкой посадкой и широкими подлокотниками, можно дополнить пуфом-оттоманкой.',
-    tags: ['Модульная система', 'Пуф-оттоманка', 'Низкий профиль'], chaise: true
+    baseDim: '2400 мм', img: 'assets/img/fly.webp',
+    note: 'Модульная система с низкой посадкой и широкими подлокотниками, можно дополнить пуфом.',
+    tags: ['2400 мм в базе', 'Модульная система', 'Низкий профиль']
+  },
+  {
+    id: 'cloud', cat: 'sofas', kind: 'ДИВАН', name: 'Cloud (Диван)', price: 3920,
+    baseDim: '2400 мм', img: 'assets/img/cloud.webp',
+    note: 'Объёмные подушки и мягкие скруглённые формы — обволакивающий комфорт как на облаке.',
+    tags: ['2400 мм в базе', 'Мягкая посадка', 'Механизм раскладки']
+  },
+  {
+    id: 'krisby', cat: 'sofas', kind: 'ДИВАН', name: 'Krisby', price: 3960,
+    baseDim: '2400 мм', img: 'assets/img/krisby.webp',
+    note: 'Лёгкий силуэт на высоких ножках. Исполняется в велюре, букле, рогожке или экокоже.',
+    tags: ['2400 мм в базе', 'Высокие ножки', 'Раскладка']
+  },
+  {
+    id: 'reflex', cat: 'sofas', kind: 'ДИВАН', name: 'Reflex', price: 4240,
+    baseDim: '2400 мм', img: 'assets/img/reflex.webp',
+    note: 'Прямые подлокотники, тонкие металлические ножки и глубокая выверенная посадка.',
+    tags: ['2400 мм в базе', 'Механизм раскладки', 'Любой размер']
+  },
+  {
+    id: 'tatlin-sofa', cat: 'sofas', kind: 'ДИВАН', name: 'Tatlin (Диван)', price: 4480,
+    baseDim: '2400 мм', img: 'assets/img/work-tatlin-modular.webp',
+    altImg: 'assets/img/work-tatlin-green.webp',
+    variants: [
+      { label: 'Модульный П-образный', img: 'assets/img/work-tatlin-modular.webp' },
+      { label: 'Прямой с тик-так', img: 'assets/img/work-tatlin-green.webp' }
+    ],
+    note: 'Фактурная драпировка и выразительный кант. Доступен с механизмом раскладки «тик-так» или в модульной сборке.',
+    tags: ['2400 мм в базе', 'Механизм тик-так', 'Модульные секции']
+  },
+  {
+    id: 'reverse', cat: 'sofas', kind: 'ДИВАН', name: 'Reverse', price: 5870,
+    baseDim: '2400 мм', img: 'assets/img/reverse.webp',
+    note: 'Двусторонние подушки со свободными чехлами и декоративным кантом на тонкой опоре.',
+    tags: ['2400 мм в базе', 'Контрастный кант', 'Тонкая опора']
   },
 
-  /* ---------- КРЕСЛА (новые модели по запросу) ---------- */
+  /* ---------- КРОВАТИ (спальное место 1600 × 2000 мм) ---------- */
   {
-    id: 'shon', cat: 'armchairs', kind: 'КРЕСЛО', name: 'Shon', price: 1570,
-    baseDim: '920 × 880 мм', minLen: 800, maxLen: 1150, defLen: 900,
-    shape: 'chair', legs: 'hidden', img: 'assets/img/shon.webp',
-    note: 'Камерное округлое кресло в фактурном букле с мягкой поясничной подушкой и плавной геометрией.',
-    tags: ['Новинка', 'Фактурное букле', 'Поясничная подушка']
+    id: 'tatlin', cat: 'beds', kind: 'КРОВАТЬ', name: 'Tatlin (Кровать)', price: 2700,
+    baseDim: '1600 × 2000 мм', img: 'assets/img/tatlin.webp',
+    note: 'Мягкая двуспальная кровать с открытым швом-кантом и высоким изголовьем из двух подушек.',
+    tags: ['1600 × 2000 мм в базе', 'Подъёмный механизм', 'Бельевой короб']
   },
   {
-    id: 'lacoon', cat: 'armchairs', kind: 'КРЕСЛО', name: 'Lacoon', price: 3200,
-    baseDim: '1300 × 1300 мм', minLen: 1100, maxLen: 1500, defLen: 1300,
-    shape: 'round', legs: 'brass', img: 'assets/img/lacoon.webp', contain: true,
-    note: 'Глубокое круглое кресло-лавсит на поворотном латунном цоколе с комплектом подушек.',
-    tags: ['Лавсит Ø 1300 мм', 'Поворотный цоколь', 'Комплект подушек']
+    id: 'cloud-bed', cat: 'beds', kind: 'КРОВАТЬ', name: 'Cloud (Кровать)', price: 3290,
+    baseDim: '1600 × 2000 мм', img: 'assets/img/bonaldo.webp', contain: true,
+    note: 'Кровать с широкими мягкими бортами-подушками по периметру и уютным высоким изголовьем со съёмными чехлами.',
+    tags: ['1600 × 2000 мм в базе', 'Мягкие борта', 'Съёмные чехлы']
   },
+
+  /* ---------- КРЕСЛА ---------- */
   {
     id: 'minotti', cat: 'armchairs', kind: 'КРЕСЛО', name: 'Minotti', price: 1450,
-    baseDim: '860 × 840 мм', minLen: 780, maxLen: 1050, defLen: 860,
-    shape: 'chair', legs: 'metal', img: 'assets/img/minotti.webp',
+    baseDim: '860 × 840 мм', img: 'assets/img/minotti.webp',
     note: 'Элегантное кресло с веерной драпировкой спинки в коже, замше или велюре на тонких металлических ножках.',
-    tags: ['Итальянский силуэт', 'Веерная драпировка', 'Кожа / Велюр'], tall: true
+    tags: ['Веерная драпировка', 'Кожа / Замша / Велюр', 'Металлические ножки']
   },
   {
-    id: 'cloud-chair', cat: 'armchairs', kind: 'КРЕСЛО', name: 'Cloud', price: 2210,
-    baseDim: '1080 × 1020 мм', minLen: 900, maxLen: 1250, defLen: 1080,
-    shape: 'chair', legs: 'hidden', img: 'assets/img/cloud-armchair.webp',
+    id: 'shon', cat: 'armchairs', kind: 'КРЕСЛО', name: 'Shon', price: 1570,
+    baseDim: '920 × 880 мм', img: 'assets/img/shon.webp',
+    note: 'Камерное округлое кресло в фактурном букле с мягкой поясничной подушкой и плавной геометрией.',
+    tags: ['Фактурное букле', 'Поясничная подушка', 'Скрытая опора']
+  },
+  {
+    id: 'cloud-chair', cat: 'armchairs', kind: 'КРЕСЛО', name: 'Cloud (Кресло)', price: 2210,
+    baseDim: '1080 × 1020 мм', img: 'assets/img/cloud-armchair.webp',
     altImg: 'assets/img/cloud-armchair-velour.webp',
     variants: [
       { label: 'Белое букле', img: 'assets/img/cloud-armchair.webp' },
@@ -111,69 +136,101 @@ IZYUM.MODELS = [
     note: 'Лаунж-кресло с объёмными подушками из коллекции Cloud. Доступно в букле, велюре и рогожке.',
     tags: ['Коллекция Cloud', '2 варианта на фото', 'Глубокий лаунж']
   },
-
-  /* ---------- КРОВАТИ (новые модели по рендерам) ---------- */
   {
-    id: 'tatlin', cat: 'beds', kind: 'КРОВАТЬ', name: 'Tatlin', price: 2890,
-    baseDim: 'Спальное место 1600 × 2000 мм', minLen: 1400, maxLen: 2000, defLen: 1600,
-    shape: 'bed', legs: 'hidden', img: 'assets/img/tatlin.webp',
-    note: 'Мягкая двуспальная кровать с открытым швом-кантом и высоким изголовьем из двух подушек.',
-    tags: ['Спальное место 140–200 см', 'Подъёмный механизм', 'Бельевой короб'], sleeper: true
+    id: 'lacoon', cat: 'armchairs', kind: 'КРЕСЛО', name: 'Lacoon', price: 3200,
+    baseDim: 'Ø 1300 мм', img: 'assets/img/lacoon.webp', contain: true,
+    note: 'Глубокое круглое кресло-лавсит на поворотном латунном цоколе с комплектом подушек.',
+    tags: ['Лавсит Ø 1300 мм', 'Поворотный цоколь', 'Комплект подушек']
+  },
+
+  /* ---------- СТУЛЬЯ ---------- */
+  {
+    id: 'chair-romeo', cat: 'chairs', kind: 'СТУЛ', name: 'Romeo', price: null, priceText: 'под заказ',
+    baseDim: 'индивидуальный подбор ткани и опор', img: 'assets/img/chair-romeo.webp',
+    note: 'Обеденное полукресло с обволакивающей спинкой, изящным вырезом и мягкими подлокотниками.',
+    tags: ['Мягкие подлокотники', 'Эргономичная спинка', 'Выбор цвета опор']
   },
   {
-    id: 'bonaldo', cat: 'beds', kind: 'КРОВАТЬ', name: 'Bonaldo Soft', price: 3150,
-    baseDim: 'Спальное место 1600 × 2000 мм', minLen: 1400, maxLen: 2000, defLen: 1600,
-    shape: 'bed', legs: 'hidden', img: 'assets/img/bonaldo.webp', contain: true,
-    note: 'Кровать с широкими мягкими бортами-подушками по периметру и уютным высоким изголовьем со съёмными чехлами.',
-    tags: ['Мягкие борта', 'Съёмные чехлы', 'Подъёмный механизм'], sleeper: true
+    id: 'chair-tallin', cat: 'chairs', kind: 'СТУЛ', name: 'Tallin', price: null, priceText: 'под заказ',
+    baseDim: 'индивидуальный подбор ткани и опор', img: 'assets/img/chair-tallin.webp',
+    note: 'Стильный стул с полукруглой спинкой и декоративным вырезом на опорах из натурального массива.',
+    tags: ['Ножки из массива', 'Поясничный вырез', 'Велюр / Шенилл']
+  },
+  {
+    id: 'chair-taupo', cat: 'chairs', kind: 'СТУЛ', name: 'Taupo', price: null, priceText: 'под заказ',
+    baseDim: 'индивидуальный подбор ткани и опор', img: 'assets/img/chair-taupo.webp',
+    note: 'Полукресло с глубокой мягкой чашей и выраженной боковой поддержкой для столовой или переговорной.',
+    tags: ['Боковая поддержка', 'Мягкая чаша', 'Металл / Массив']
+  },
+  {
+    id: 'chair-temby', cat: 'chairs', kind: 'СТУЛ', name: 'Temby', price: null, priceText: 'под заказ',
+    baseDim: 'индивидуальный подбор ткани и опор', img: 'assets/img/chair-temby.webp',
+    note: 'Классический современный стул с высокой анатомической спинкой и тёплыми деревянными ножками.',
+    tags: ['Высокая спинка', 'Деревянные опоры', 'Лёгкая чистка']
+  },
+  {
+    id: 'chair-tempe', cat: 'chairs', kind: 'СТУЛ', name: 'Tempe', price: null, priceText: 'под заказ',
+    baseDim: 'индивидуальный подбор ткани и опор', img: 'assets/img/chair-tempe.webp',
+    note: 'Компактный обеденный стул с округлой спинкой-ракушкой, который легко задвигается под любой стол.',
+    tags: ['Компактный силуэт', 'Спинка-ракушка', 'Любая обивка']
+  },
+  {
+    id: 'chair-vichy', cat: 'chairs', kind: 'СТУЛ', name: 'Vichy', price: null, priceText: 'под заказ',
+    baseDim: 'индивидуальный подбор ткани и опор', img: 'assets/img/chair-vichy.webp',
+    note: 'Уютное полукресло-бочонок в фактурном букле или велюре на деревянных конусных опорах.',
+    tags: ['Фактурное букле', 'Форма полукресла', 'Натуральное дерево']
+  },
+  {
+    id: 'chair-kona', cat: 'chairs', kind: 'СТУЛ', name: 'Kona', price: null, priceText: 'под заказ',
+    baseDim: 'индивидуальный подбор ткани и опор', img: 'assets/img/chair-kona.webp',
+    note: 'Элегантное полукресло с плавным переходом спинки в подлокотники и мягкой подушкой сиденья.',
+    tags: ['С подлокотниками', 'Премиум-велюр', 'Опоры из массива']
   }
 ];
 
-IZYUM.PRICING = {
-  baseLength: 2400,
-  minLength: 800,
-  maxLength: 3200,
-  stepLength: 100,
-  perStep: 0.035,
+/* Полный прайс-лист всех моделей по категориям */
+IZYUM.PRICELIST = [
+  /* Диваны (2400 мм) */
+  { cat: 'sofas', kind: 'Диван', name: 'Noah',           dim: '2400 мм', price: 3400 },
+  { cat: 'sofas', kind: 'Диван', name: 'Lema',           dim: '2400 мм', price: 3560 },
+  { cat: 'sofas', kind: 'Диван', name: 'Fly',            dim: '2400 мм', price: 3820 },
+  { cat: 'sofas', kind: 'Диван', name: 'FF',             dim: '2400 мм', price: 3820 },
+  { cat: 'sofas', kind: 'Диван', name: 'Cloud (Диван)',  dim: '2400 мм', price: 3920 },
+  { cat: 'sofas', kind: 'Диван', name: 'Krisby',         dim: '2400 мм', price: 3960 },
+  { cat: 'sofas', kind: 'Диван', name: 'Coxo',           dim: '2400 мм', price: 4080 },
+  { cat: 'sofas', kind: 'Диван', name: 'Oxford',         dim: '2400 мм', price: 4110 },
+  { cat: 'sofas', kind: 'Диван', name: 'Lukas',          dim: '2400 мм', price: 4120 },
+  { cat: 'sofas', kind: 'Диван', name: 'Reflex',         dim: '2400 мм', price: 4240 },
+  { cat: 'sofas', kind: 'Диван', name: 'Tatlin (Диван)', dim: '2400 мм', price: 4480 },
+  { cat: 'sofas', kind: 'Диван', name: 'Reverse',        dim: '2400 мм', price: 5870 },
+  { cat: 'sofas', kind: 'Диван', name: 'Club',           dim: '2400 мм', price: 6360 },
 
-  depths: [
-    { mm: 950,  k: 0,    label: '950' },
-    { mm: 1050, k: 0.05, label: '1050' },
-    { mm: 1150, k: 0.09, label: '1150' }
-  ],
+  /* Кровати (1600 × 2000 мм) */
+  { cat: 'beds', kind: 'Кровать', name: 'Praddy',           dim: '1600 × 2000 мм', price: 2410 },
+  { cat: 'beds', kind: 'Кровать', name: 'Alaska',           dim: '1600 × 2000 мм', price: 2410 },
+  { cat: 'beds', kind: 'Кровать', name: 'Flow',             dim: '1600 × 2000 мм', price: 2550 },
+  { cat: 'beds', kind: 'Кровать', name: 'Grace',            dim: '1600 × 2000 мм', price: 2550 },
+  { cat: 'beds', kind: 'Кровать', name: 'Tatlin (Кровать)', dim: '1600 × 2000 мм', price: 2700 },
+  { cat: 'beds', kind: 'Кровать', name: 'Cocoon',           dim: '1600 × 2000 мм', price: 2700 },
+  { cat: 'beds', kind: 'Кровать', name: 'Wave',             dim: '1600 × 2000 мм', price: 3180 },
+  { cat: 'beds', kind: 'Кровать', name: 'Saia',             dim: '1600 × 2000 мм', price: 3290 },
+  { cat: 'beds', kind: 'Кровать', name: 'Cloud (Кровать)',  dim: '1600 × 2000 мм', price: 3290 },
 
-  fabrics: [
-    { id: 'velour', name: 'Велюр',   k: 0,    colors: [
-      ['Молоко', '#E8E0D2'], ['Карамель', '#A57A52'], ['Олива', '#6B6B45'], ['Петроль', '#1F5260'], ['Графит', '#4A4A4A'] ] },
-    { id: 'matting', name: 'Рогожка', k: 0.04, colors: [
-      ['Лён', '#D8CDBB'], ['Песок', '#C2AE8E'], ['Мох', '#5E6648'], ['Серый', '#8D8A85'] ] },
-    { id: 'boucle', name: 'Букле',    k: 0.10, colors: [
-      ['Облако', '#EEE9E0'], ['Овсянка', '#D9CCB4'], ['Шалфей', '#A6A98F'] ] },
-    { id: 'eco',    name: 'Экокожа',  k: 0.14, colors: [
-      ['Тауп', '#7E6E5E'], ['Шоколад', '#4B3628'], ['Уголь', '#2F2C2A'] ] },
-    { id: 'leather', name: 'Кожа',    k: 0.38, colors: [
-      ['Коньяк', '#8A5A36'], ['Тауп', '#6E5D4B'], ['Графит', '#3C3A38'] ] }
-  ],
+  /* Кресла */
+  { cat: 'armchairs', kind: 'Кресло', name: 'Minotti',        dim: 'индивидуально', price: 1450 },
+  { cat: 'armchairs', kind: 'Кресло', name: 'Shon',           dim: 'индивидуально', price: 1570 },
+  { cat: 'armchairs', kind: 'Кресло', name: 'Cloud (Кресло)', dim: 'индивидуально', price: 2210 },
+  { cat: 'armchairs', kind: 'Кресло', name: 'Lacoon',         dim: 'Ø 1300 мм',     price: 3200 },
 
-  fills: [
-    { id: 'ppu',    name: 'ППУ High Resilience (HR)', hint: 'держит форму, анатомическая поддержка', k: 0 },
-    { id: 'spring', name: 'ППУ + независимый пружинный блок', hint: 'упругая посадка и ежедневный сон', k: 0.07 },
-    { id: 'down',   name: 'ППУ + натуральный пух-перо', hint: 'максимально мягкая обволакивающая посадка', k: 0.12 }
-  ],
-
-  legs: [
-    { id: 'metal',  name: 'Металл',  add: 0 },
-    { id: 'oak',    name: 'Дуб',     add: 120 },
-    { id: 'brass',  name: 'Латунь',  add: 190 },
-    { id: 'hidden', name: 'Скрытые', add: 0 }
-  ],
-
-  extras: {
-    sleeper: { name: 'Механизм раскладки / подъёма', add: 520 },
-    box:     { name: 'Ящик для белья',               add: 260 },
-    pillow:  { name: 'Декоративная подушка',         add: 70, max: 4 }
-  }
-};
+  /* Стулья */
+  { cat: 'chairs', kind: 'Стул', name: 'Romeo',  dim: 'выбор ткани и опор', price: null, priceText: 'под заказ' },
+  { cat: 'chairs', kind: 'Стул', name: 'Tallin', dim: 'выбор ткани и опор', price: null, priceText: 'под заказ' },
+  { cat: 'chairs', kind: 'Стул', name: 'Taupo',  dim: 'выбор ткани и опор', price: null, priceText: 'под заказ' },
+  { cat: 'chairs', kind: 'Стул', name: 'Temby',  dim: 'выбор ткани и опор', price: null, priceText: 'под заказ' },
+  { cat: 'chairs', kind: 'Стул', name: 'Tempe',  dim: 'выбор ткани и опор', price: null, priceText: 'под заказ' },
+  { cat: 'chairs', kind: 'Стул', name: 'Vichy',  dim: 'выбор ткани и опор', price: null, priceText: 'под заказ' },
+  { cat: 'chairs', kind: 'Стул', name: 'Kona',   dim: 'выбор ткани и опор', price: null, priceText: 'под заказ' }
+];
 
 IZYUM.CALC = {
   terms: [
@@ -189,37 +246,6 @@ IZYUM.CALC = {
   ],
   liftFlat: 20,
   stairsPerFloor: 8
-};
-
-IZYUM.priceOf = function (cfg) {
-  var P = IZYUM.PRICING;
-  var m = IZYUM.MODELS.find(function (x) { return x.id === cfg.model; }) || IZYUM.MODELS[0];
-  var fabric = P.fabrics.find(function (f) { return f.id === cfg.fabric; }) || P.fabrics[0];
-  var fill = P.fills.find(function (f) { return f.id === cfg.fill; }) || P.fills[0];
-  var depth = P.depths.find(function (d) { return d.mm === +cfg.depth; }) || P.depths[0];
-  var legs = P.legs.find(function (l) { return l.id === cfg.legs; }) || P.legs[0];
-
-  var refLen = m.defLen || P.baseLength;
-  var lenK = Math.max(0.75, 1 + ((cfg.length - refLen) / P.stepLength) * P.perStep);
-  var lines = [];
-  var base = m.price;
-  var sized = Math.round(base * lenK);
-  var dimLabel = m.cat === 'beds' ? ('спальное место ' + cfg.length + ' мм') : (cfg.length + ' мм');
-  lines.push([m.kind.charAt(0) + m.kind.slice(1).toLowerCase() + ' ' + m.name + ', ' + dimLabel, sized]);
-
-  var add = function (label, v) { v = Math.round(v); if (v) lines.push([label, v]); return v; };
-  var total = sized;
-  if (m.cat !== 'beds') {
-    total += add('Глубина ' + depth.mm + ' мм', sized * depth.k);
-  }
-  total += add('Ткань: ' + fabric.name, sized * fabric.k);
-  total += add('Наполнение: ' + fill.name, sized * fill.k);
-  total += add('Опора: ' + legs.name.toLowerCase(), legs.add);
-  if (cfg.sleeper && m.sleeper) total += add(m.cat === 'beds' ? 'Подъёмный механизм' : P.extras.sleeper.name, P.extras.sleeper.add);
-  if (cfg.box) total += add(P.extras.box.name, P.extras.box.add);
-  if (cfg.pillows) total += add('Подушки × ' + cfg.pillows, cfg.pillows * P.extras.pillow.add);
-
-  return { total: Math.round(total / 10) * 10, lines: lines, model: m, fabric: fabric };
 };
 
 IZYUM.fmt = function (n) {

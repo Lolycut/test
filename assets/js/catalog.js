@@ -1,11 +1,13 @@
-/* Каталог ИЗЮМ с категориями (Все, Диваны, Кресла, Кровати), интерактивной витриной, переключателем обивки и сеткой карточек. */
+/* Каталог ИЗЮМ с категориями (Все, Диваны, Кровати, Кресла, Стулья), витриной, карточками и прайс-листом. */
 (function () {
   var ALL = IZYUM.MODELS;
   var CATS = IZYUM.CATEGORIES;
+  var PL = IZYUM.PRICELIST || [];
   var viewer = document.querySelector('.viewer');
   var strip = document.querySelector('.model-strip');
   var catTabsBox = document.querySelector('[data-cat-tabs]');
   var gridBox = document.querySelector('[data-cat-grid]');
+  var plBox = document.querySelector('[data-pricelist-grid]');
   var varBox = document.querySelector('[data-viewer-variants]');
   if (!viewer || !strip) return;
 
@@ -21,27 +23,28 @@
     kind: document.querySelector('[data-kind]'),
     name: document.querySelector('[data-name]'),
     size: document.querySelector('[data-size]'),
-    price: document.querySelector('[data-price]'),
+    priceWrap: document.querySelector('.poster .price'),
     note: document.querySelector('[data-note]'),
     facts: document.querySelector('[data-facts]'),
-    count: document.querySelector('[data-count]'),
-    build: document.querySelector('[data-build]'),
     ask: document.querySelector('[data-ask-model]')
   };
+
+  function fmtPrice(m) {
+    if (m.price && m.price > 0) return 'от ' + IZYUM.fmt(m.price) + ' BYN';
+    return m.priceText || 'под заказ';
+  }
 
   function getFiltered(catId) {
     if (catId === 'all') return ALL.slice();
     return ALL.filter(function (m) { return m.cat === catId; });
   }
 
-  /* ---------- Вкладки категорий ---------- */
   function renderCatTabs() {
     if (!catTabsBox) return;
     catTabsBox.innerHTML = CATS.map(function (c) {
-      var count = getFiltered(c.id).length;
       var sel = c.id === activeCat;
       return '<button type="button" class="cat-tab' + (sel ? ' active' : '') + '" role="tab" aria-selected="' + sel + '" data-cat="' + c.id + '">' +
-        '<span>' + c.name + '</span><span class="cnt num">' + count + '</span></button>';
+        '<span>' + c.name + '</span></button>';
     }).join('');
   }
 
@@ -53,7 +56,6 @@
     });
   }
 
-  /* ---------- Сетка карточек ниже витрины ---------- */
   function renderGrid() {
     if (!gridBox) return;
     gridBox.innerHTML = filtered.map(function (m, i) {
@@ -66,7 +68,8 @@
         '</div>'
       ) : '';
       var tagsHtml = (m.tags || []).map(function (t) { return '<span class="cat-card-tag">' + t + '</span>'; }).join('');
-      var leadTitle = m.kind.charAt(0) + m.kind.slice(1).toLowerCase() + ' ' + m.name + ' (от ' + IZYUM.fmt(m.price) + ' BYN)';
+      var pText = fmtPrice(m);
+      var leadTitle = m.kind.charAt(0) + m.kind.slice(1).toLowerCase() + ' ' + m.name + ' (' + pText + ')';
       return '<article class="cat-card" data-model-card="' + m.id + '">' +
         '<div class="cat-card-media" data-focus-idx="' + i + '" title="Показать на большой витрине">' +
           '<img src="' + m.img + '" alt="' + m.kind + ' ' + m.name + '" loading="lazy" class="' + (m.contain ? 'contain-mode' : '') + '">' +
@@ -76,17 +79,36 @@
         '<div class="cat-card-body">' +
           '<div class="cat-card-top">' +
             '<h3 class="cat-card-title">' + m.name + '</h3>' +
-            '<span class="cat-card-price num">от ' + IZYUM.fmt(m.price) + ' BYN</span>' +
+            '<span class="cat-card-price num">' + pText + '</span>' +
           '</div>' +
-          '<span class="cat-card-dim">' + (m.baseDim || 'Индивидуальный размер') + '</span>' +
+          '<span class="cat-card-dim">База: ' + (m.baseDim || 'индивидуально') + '</span>' +
           '<p class="cat-card-desc">' + m.note + '</p>' +
           '<div class="cat-card-tags">' + tagsHtml + '</div>' +
           '<div class="cat-card-actions">' +
-            '<a class="btn sm" href="constructor.html?model=' + m.id + '">В конструктор</a>' +
-            '<button class="btn ghost sm" type="button" data-lead="' + leadTitle + '">Заказать</button>' +
+            '<button class="btn sm block" type="button" data-lead="' + leadTitle + '">Рассчитать в моей ткани</button>' +
           '</div>' +
         '</div>' +
       '</article>';
+    }).join('');
+  }
+
+  /* 2-строчная карточка прайс-листа: название и цена сверху, размер и кнопка снизу без узких переносов */
+  function renderPricelist() {
+    if (!plBox) return;
+    var items = activeCat === 'all' ? PL : PL.filter(function (x) { return x.cat === activeCat; });
+    plBox.innerHTML = items.map(function (item) {
+      var pStr = (item.price && item.price > 0) ? ('от ' + IZYUM.fmt(item.price) + ' BYN') : (item.priceText || 'под заказ');
+      var leadTitle = item.kind + ' ' + item.name + ' (' + item.dim + ', ' + pStr + ')';
+      return '<div class="pricelist-row">' +
+        '<div class="pricelist-top">' +
+          '<strong>' + item.name + '</strong>' +
+          '<span class="pl-price num">' + pStr + '</span>' +
+        '</div>' +
+        '<div class="pricelist-btm">' +
+          '<span class="pl-sub">' + item.kind + ' · ' + item.dim + '</span>' +
+          '<button type="button" class="btn ghost sm" data-lead="' + leadTitle + '">Заказать</button>' +
+        '</div>' +
+      '</div>';
     }).join('');
   }
 
@@ -112,7 +134,6 @@
     });
   }
 
-  /* ---------- Перестроение витрины при смене категории ---------- */
   function rebuildViewer(startModelId) {
     filtered = getFiltered(activeCat);
     imgs.forEach(function (im) { if (im.parentNode === viewer) viewer.removeChild(im); });
@@ -151,22 +172,28 @@
     fill(filtered[idx], idx);
     renderCatTabs();
     renderGrid();
+    renderPricelist();
   }
 
-  function fill(m, i) {
+  function fill(m) {
     if (!m) return;
     if (el.kind) el.kind.textContent = m.kind;
     if (el.name) el.name.textContent = m.name;
     if (el.size) el.size.textContent = m.baseDim || '2400 мм';
-    if (el.price) el.price.textContent = IZYUM.fmt(m.price);
+    if (el.priceWrap) {
+      if (m.price && m.price > 0) {
+        el.priceWrap.innerHTML = '<small>от</small><span data-price class="num">' + IZYUM.fmt(m.price) + '</span> BYN';
+      } else {
+        el.priceWrap.innerHTML = '<span data-price>' + (m.priceText || 'под заказ') + '</span>';
+      }
+    }
     if (el.note) el.note.textContent = m.note;
 
-    var f = m.tags ? m.tags.slice() : ['Индивидуальный размер', 'Выбор ткани в салоне'];
+    var f = m.tags ? m.tags.slice() : ['Индивидуальный размер', 'Выбор ткани с дизайнером'];
     if (el.facts) el.facts.innerHTML = f.map(function (t) { return '<li>' + t + '</li>'; }).join('');
-    if (el.count) el.count.textContent = (i + 1) + ' из ' + filtered.length;
-    if (el.build) el.build.href = 'constructor.html?model=' + m.id;
     if (el.ask) {
-      var leadTitle = m.kind.charAt(0) + m.kind.slice(1).toLowerCase() + ' ' + m.name + ' (от ' + IZYUM.fmt(m.price) + ' BYN)';
+      var pText = fmtPrice(m);
+      var leadTitle = m.kind.charAt(0) + m.kind.slice(1).toLowerCase() + ' ' + m.name + ' (' + pText + ')';
       el.ask.setAttribute('data-lead', leadTitle);
     }
 

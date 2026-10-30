@@ -305,17 +305,47 @@
   /* инлайн-формы на страницах (контакты) */
   $$('form[data-inline-lead]').forEach(function (f) { bindForm(f); });
 
-  /* ---------- БАННЕР COOKIE (Закон РБ № 99-З / НЦЗПД РБ) ---------- */
+  /* ---------- БАННЕР COOKIE И GOOGLE ANALYTICS (ст. 5 и ст. 9 Закона РБ № 99-З / НЦЗПД РБ) ---------- */
+  function syncGoogleAnalytics(granted) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    window.gtag = window.gtag || gtag;
+    if (granted) {
+      gtag('consent', 'update', { analytics_storage: 'granted' });
+      var gaId = IZYUM.SITE.gaMeasurementId;
+      if (gaId && !document.getElementById('ga-gtag-script') && /^https?:$/.test(location.protocol)) {
+        var s = document.createElement('script');
+        s.id = 'ga-gtag-script';
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(gaId);
+        document.head.appendChild(s);
+        gtag('js', new Date());
+        gtag('config', gaId, { anonymize_ip: true });
+      }
+    } else {
+      gtag('consent', 'update', { analytics_storage: 'denied' });
+      // Удаляем аналитические файлы cookie _ga, _gid, _gat при отказе или отзыве согласия
+      try {
+        document.cookie.split(';').forEach(function (c) {
+          var name = c.split('=')[0].trim();
+          if (/^(_ga|_gid|_gat)/.test(name)) {
+            document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+          }
+        });
+      } catch (e) {}
+    }
+  }
+
   var cookieHTML =
-    '<aside class="cookie-bar" id="cookie-bar" role="region" aria-label="Уведомление об использовании файлов cookie">' +
+    '<aside class="cookie-bar" id="cookie-bar" role="region" aria-label="Уведомление об использовании файлов cookie и трансграничной передаче">' +
       '<p class="cookie-bar-text">' +
-        '<strong>Мы используем файлы cookie и локальное хранилище браузера.</strong> ' +
-        'Технические файлы необходимы для работы сайта (сохранение выбранной темы, расчётов конструктора и статуса согласия). ' +
-        'Функциональные файлы помогают делать сайт удобнее. Подробнее — в <a class="link" href="privacy.html#cookies">Политике обработки файлов cookie</a>.' +
+        '<strong>Мы используем файлы cookie и сервис веб-аналитики Google Analytics.</strong> ' +
+        'Технические файлы необходимы для работы сайта (сохранение темы, конструктора и статуса согласия). ' +
+        'С вашего согласия мы используем аналитические cookie Google Analytics (Google LLC, США), что включает <strong>трансграничную передачу обезличенных технических данных</strong> (Client ID, параметры устройства, усечённый IP) в государства, где может не обеспечиваться надлежащий уровень защиты персональных данных (ст. 9 Закона РБ № 99-З). Номера телефонов из заявок в Google не передаются. Подробнее о рисках и правах — в <a class="link" href="privacy.html#cookies">Политике обработки ПД и файлов cookie</a>.' +
       '</p>' +
       '<div class="cookie-settings-panel" id="cookie-settings">' +
-        '<div class="cookie-row"><span><strong>Технические (обязательные)</strong> — тема оформления, конструктор, сессия</span><span class="muted small">Всегда активны</span></div>' +
-        '<label class="cookie-row" style="cursor:pointer"><span><strong>Функциональные и аналитические</strong> — запоминание предпочтений каталога</span><input type="checkbox" id="ck-func" checked style="accent-color:var(--teal);width:18px;height:18px"></label>' +
+        '<div class="cookie-row"><span><strong>Технические и функциональные (обязательные)</strong> — тема оформления, выбранные параметры, сессия (хранятся локально, без трансграничной передачи)</span><span class="muted small">Всегда активны</span></div>' +
+        '<label class="cookie-row" style="cursor:pointer"><span><strong>Целевые / Аналитические cookie (Google Analytics — _ga, _gid)</strong> — сбор обобщённой статистики посещаемости с трансграничной передачей данных в адрес Google LLC (США) на основании ст. 9 Закона № 99-З</span><input type="checkbox" id="ck-func" style="accent-color:var(--teal);width:18px;height:18px;flex:none;margin-top:2px"></label>' +
       '</div>' +
       '<div class="cookie-actions">' +
         '<button type="button" class="cookie-btn" data-cookie-act="all">Принять все</button>' +
@@ -330,20 +360,26 @@
   var btnSaveCookie = $('[data-cookie-act="save"]', cookieBar);
   var btnToggleCookie = $('[data-cookie-act="toggle-settings"]', cookieBar);
 
-  function saveCookieChoice(functional) {
+  function saveCookieChoice(analyticsGranted) {
     var payload = {
       necessary: true,
-      functional: !!functional,
+      functional: !!analyticsGranted,
+      analytics: !!analyticsGranted,
+      crossBorderConsent99Z: !!analyticsGranted,
       updatedAt: new Date().toISOString()
     };
     IZYUM.store.set('cookie_consent', payload);
+    syncGoogleAnalytics(!!analyticsGranted);
     cookieBar.classList.remove('on', 'show-settings');
-    window.izyumToast(functional ? 'Настройки cookie сохранены (все категории)' : 'Сохранены только технические cookie');
+    window.izyumToast(analyticsGranted ? 'Согласие на все cookie (включая Google Analytics) сохранено' : 'Сохранены только технические cookie (Google Analytics отключён)');
   }
 
   var existingCookie = IZYUM.store.get('cookie_consent', null);
   if (!existingCookie) {
+    syncGoogleAnalytics(false);
     setTimeout(function () { cookieBar.classList.add('on'); }, 600);
+  } else {
+    syncGoogleAnalytics(!!existingCookie.analytics || !!existingCookie.functional);
   }
 
   cookieBar.addEventListener('click', function (e) {
