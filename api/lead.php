@@ -160,7 +160,7 @@ $htmlPage = htmlspecialchars($page, ENT_QUOTES, 'UTF-8');
 $htmlBody = "<!doctype html><html lang='ru'><body style='font-family:Arial,sans-serif;background:#F5F2EE;padding:16px;color:#2A231D'>"
     . "<div style='max-width:560px;margin:0 auto;background:#FFFFFF;border-radius:14px;overflow:hidden;border:1px solid #E2DBD2'>"
     . "<div style='background:#095562;color:#FFFFFF;padding:18px 22px'>"
-    . "<div style='font-size:12px;letter-spacing:1px;opacity:.85'>МАГАЗИН МЯГКОЙ МЕБЕЛИ «ИЗЮМ» · ООО «АЛБРО»</div>"
+    . "<div style='font-size:12px;letter-spacing:1px;opacity:.85'>САЛОН МЯГКОЙ МЕБЕЛИ «ИЗЮМ» · ООО «АЛБРО»</div>"
     . "<h2 style='margin:6px 0 0;font-size:20px'>Новая заявка № {$leadId}</h2>"
     . "</div>"
     . "<div style='padding:20px 22px'>"

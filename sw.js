@@ -1,12 +1,13 @@
-/* ИЗЮМ — service worker v2: поддержка офлайн-режима, новых моделей и тёмной темы. */
-var VERSION = 'izyum-v3';
+/* ИЗЮМ — service worker: поддержка офлайн-режима, новых моделей и тёмной темы. */
+var VERSION = 'izyum-v6';
 var CORE = [
   '/', '/index.html', '/catalog.html', '/calculator.html', '/contacts.html',
   '/privacy.html', '/offline.html',
   '/assets/css/style.css',
   '/assets/js/data.js', '/assets/js/app.js', '/assets/js/catalog.js', '/assets/js/calculator.js',
-  '/assets/img/cloud.webp', '/assets/img/reflex.webp', '/assets/img/shon.webp', '/assets/img/lacoon.webp',
-  '/assets/img/minotti.webp', '/assets/img/cloud-armchair.webp', '/assets/img/tatlin.webp', '/assets/img/bonaldo.webp',
+  '/assets/img/cloud.webp', '/assets/img/reflex.webp', '/assets/img/shon.webp', '/assets/img/lacoon-beige.webp',
+  '/assets/img/minotti.webp', '/assets/img/cloud-armchair-powder.webp', '/assets/img/tatlin.webp', '/assets/img/bed-cloud.webp',
+  '/assets/img/chair-romeo.webp',
   '/assets/icons/icon-192.png', '/favicon.svg', '/manifest.webmanifest'
 ];
 

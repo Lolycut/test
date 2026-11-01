@@ -26,6 +26,7 @@
     priceWrap: document.querySelector('.poster .price'),
     note: document.querySelector('[data-note]'),
     facts: document.querySelector('[data-facts]'),
+    credit: document.querySelector('[data-credit-info]'),
     ask: document.querySelector('[data-ask-model]')
   };
 
@@ -34,9 +35,24 @@
     return m.priceText || 'под заказ';
   }
 
-  function getFiltered(catId) {
-    if (catId === 'all') return ALL.slice();
-    return ALL.filter(function (m) { return m.cat === catId; });
+  /* Вариант может переопределять режим вписывания (contain) и точку кадрирования (pos) */
+  function variantOf(m, vi) {
+    return (m.variants && m.variants[vi]) || { img: m.img };
+  }
+  function viewOf(m, v) {
+    return {
+      img: v.img || m.img,
+      contain: v.contain !== undefined ? v.contain : !!m.contain,
+      pos: v.pos || m.pos || ''
+    };
+  }
+  function applyView(img, view) {
+    if (img.getAttribute('src') !== view.img) img.src = view.img;
+    img.classList.toggle('contain-mode', view.contain);
+    img.style.objectPosition = view.contain ? '' : view.pos;
+  }
+  function viewAttr(view) {
+    return ' class="' + (view.contain ? 'contain-mode' : '') + '"' + (view.pos && !view.contain ? ' style="object-position:' + view.pos + '"' : '');
   }
 
   function renderCatTabs() {
@@ -63,16 +79,17 @@
       var varBtns = hasVar ? (
         '<div class="cat-card-var">' +
         m.variants.map(function (v, vi) {
-          return '<button type="button" class="' + (vi === 0 ? 'on' : '') + '" data-card-var="' + m.id + '" data-img="' + v.img + '">' + v.label + '</button>';
+          return '<button type="button" class="' + (vi === 0 ? 'on' : '') + '" data-card-var="' + m.id + '" data-vi="' + vi + '">' + v.label + '</button>';
         }).join('') +
         '</div>'
       ) : '';
       var tagsHtml = (m.tags || []).map(function (t) { return '<span class="cat-card-tag">' + t + '</span>'; }).join('');
       var pText = fmtPrice(m);
       var leadTitle = m.kind.charAt(0) + m.kind.slice(1).toLowerCase() + ' ' + m.name + ' (' + pText + ')';
+      var view = viewOf(m, variantOf(m, 0));
       return '<article class="cat-card" data-model-card="' + m.id + '">' +
         '<div class="cat-card-media" data-focus-idx="' + i + '" title="Показать на большой витрине">' +
-          '<img src="' + m.img + '" alt="' + m.kind + ' ' + m.name + '" loading="lazy" class="' + (m.contain ? 'contain-mode' : '') + '">' +
+          '<img src="' + view.img + '" alt="' + m.kind + ' ' + m.name + '" loading="lazy"' + viewAttr(view) + '>' +
           '<span class="cat-card-badge">' + m.kind + '</span>' +
           varBtns +
         '</div>' +
@@ -82,10 +99,13 @@
             '<span class="cat-card-price num">' + pText + '</span>' +
           '</div>' +
           '<span class="cat-card-dim">База: ' + (m.baseDim || 'индивидуально') + '</span>' +
+          ((m.price && m.price > 0 && IZYUM.calcRodnye) ? (
+            '<a class="cat-card-credit num" href="calculator.html?mode=rodnye&sum=' + m.price + '&model=' + encodeURIComponent(m.kind.charAt(0) + m.kind.slice(1).toLowerCase() + ' ' + m.name) + '" title="Предварительный расчёт кредита «На родныя тавары» под 4% на 36 мес. (не является публичной офертой)">Кредит «На родныя тавары» 4%: ~' + IZYUM.fmt(IZYUM.calcRodnye(m.price, 36).monthly) + ' BYN/мес*</a>'
+          ) : '') +
           '<p class="cat-card-desc">' + m.note + '</p>' +
           '<div class="cat-card-tags">' + tagsHtml + '</div>' +
           '<div class="cat-card-actions">' +
-            '<button class="btn sm block" type="button" data-lead="' + leadTitle + '">Рассчитать в моей ткани</button>' +
+            '<button class="btn sm block" type="button" data-lead="' + leadTitle + '">Оставить заявку</button>' +
           '</div>' +
         '</div>' +
       '</article>';
@@ -105,8 +125,8 @@
           '<span class="pl-price num">' + pStr + '</span>' +
         '</div>' +
         '<div class="pricelist-btm">' +
-          '<span class="pl-sub">' + item.kind + ' · ' + item.dim + '</span>' +
-          '<button type="button" class="btn ghost sm" data-lead="' + leadTitle + '">Заказать</button>' +
+          '<span class="pl-sub">' + item.kind + ' · ' + item.dim + ((item.price && item.price > 0 && IZYUM.calcRodnye) ? (' · <a class="link num" href="calculator.html?mode=rodnye&sum=' + item.price + '&model=' + encodeURIComponent(item.kind + ' ' + item.name) + '">~' + IZYUM.fmt(IZYUM.calcRodnye(item.price, 36).monthly) + ' BYN/мес в кредит 4%*</a>') : '') + '</span>' +
+          '<button type="button" class="btn ghost sm" data-lead="' + leadTitle + '">Оставить заявку</button>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -117,9 +137,10 @@
       var vb = e.target.closest('[data-card-var]');
       if (vb) {
         e.stopPropagation();
+        var m = ALL.find(function (x) { return x.id === vb.dataset.cardVar; });
         var card = vb.closest('.cat-card');
         var img = card.querySelector('.cat-card-media img');
-        if (img && vb.dataset.img) img.src = vb.dataset.img;
+        if (m && img) applyView(img, viewOf(m, variantOf(m, +vb.dataset.vi)));
         Array.prototype.forEach.call(vb.parentNode.children, function (btn) {
           btn.classList.toggle('on', btn === vb);
         });
@@ -148,15 +169,14 @@
 
     filtered.forEach(function (m, i) {
       var img = new Image();
-      img.src = m.img;
       img.alt = m.kind + ' ' + m.name + ' — ИЗЮМ';
       img.decoding = 'async';
-      if (m.contain) img.classList.add('contain-mode');
       if (i !== idx) {
         img.classList.add('out');
         img.loading = 'lazy';
         img.setAttribute('aria-hidden', 'true');
       }
+      applyView(img, viewOf(m, variantOf(m, 0)));
       viewer.insertBefore(img, viewer.firstChild);
       imgs.push(img);
 
@@ -175,6 +195,11 @@
     renderPricelist();
   }
 
+  function getFiltered(catId) {
+    if (catId === 'all') return ALL.slice();
+    return ALL.filter(function (m) { return m.cat === catId; });
+  }
+
   function fill(m) {
     if (!m) return;
     if (el.kind) el.kind.textContent = m.kind;
@@ -191,6 +216,17 @@
 
     var f = m.tags ? m.tags.slice() : ['Индивидуальный размер', 'Выбор ткани с дизайнером'];
     if (el.facts) el.facts.innerHTML = f.map(function (t) { return '<li>' + t + '</li>'; }).join('');
+    if (el.credit) {
+      if (m.price && m.price > 0 && IZYUM.calcRodnye) {
+        var cr = IZYUM.calcRodnye(m.price, 36);
+        var mTitle = m.kind.charAt(0) + m.kind.slice(1).toLowerCase() + ' ' + m.name;
+        el.credit.hidden = false;
+        el.credit.innerHTML = 'Кредит «На родныя тавары» 4% (до 36 мес.): <strong class="num">~' + IZYUM.fmt(cr.monthly) + ' BYN/мес*</strong> · <a class="link" href="calculator.html?mode=rodnye&sum=' + m.price + '&model=' + encodeURIComponent(mTitle) + '">Рассчитать в калькуляторе</a>';
+      } else {
+        el.credit.hidden = true;
+        el.credit.innerHTML = '';
+      }
+    }
     if (el.ask) {
       var pText = fmtPrice(m);
       var leadTitle = m.kind.charAt(0) + m.kind.slice(1).toLowerCase() + ' ' + m.name + ' (' + pText + ')';
@@ -201,7 +237,7 @@
       if (m.variants && m.variants.length > 1) {
         varBox.hidden = false;
         varBox.innerHTML = m.variants.map(function (v, vi) {
-          return '<button type="button" class="' + (vi === 0 ? 'on' : '') + '" data-v-img="' + v.img + '">' + v.label + '</button>';
+          return '<button type="button" class="' + (vi === 0 ? 'on' : '') + '" data-vi="' + vi + '">' + v.label + '</button>';
         }).join('');
       } else {
         varBox.hidden = true;
@@ -212,9 +248,10 @@
 
   if (varBox) {
     varBox.addEventListener('click', function (e) {
-      var b = e.target.closest('[data-v-img]');
-      if (!b || !imgs[idx]) return;
-      imgs[idx].src = b.dataset.vImg;
+      var b = e.target.closest('[data-vi]');
+      var m = filtered[idx];
+      if (!b || !imgs[idx] || !m) return;
+      applyView(imgs[idx], viewOf(m, variantOf(m, +b.dataset.vi)));
       Array.prototype.forEach.call(varBox.children, function (btn) {
         btn.classList.toggle('on', btn === b);
       });
@@ -225,6 +262,8 @@
     if (!filtered.length) return;
     i = (i + filtered.length) % filtered.length;
     if (i === idx) return;
+    /* при уходе со слайда возвращаем первый вариант, чтобы витрина и кнопки вариантов совпадали */
+    applyView(imgs[idx], viewOf(filtered[idx], variantOf(filtered[idx], 0)));
     imgs[idx].classList.add('out');
     imgs[idx].setAttribute('aria-hidden', 'true');
     imgs[i].classList.remove('out');

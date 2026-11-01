@@ -20,6 +20,9 @@
   --r-m: 18px;
   --r-l: 28px;
   --nav-h: 68px;
+  /* ширина контента и поля по бокам; на широких экранах расширяются (см. конец файла) */
+  --wrap-max: 1140px;
+  --gutter: 16px;
   --ease: cubic-bezier(.2, .7, .2, 1);
   --spring: cubic-bezier(.34, 1.4, .5, 1);
   --font: 'Onest', 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -74,7 +77,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 :focus-visible { outline: 2px solid var(--petrol); outline-offset: 3px; border-radius: 6px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-.wrap { width: min(1140px, 100% - 32px); margin-inline: auto; }
+.wrap { width: min(var(--wrap-max), 100% - 2 * var(--gutter)); margin-inline: auto; }
 .num { font-variant-numeric: tabular-nums; }
 
 /* ---------- типографика ---------- */
@@ -91,7 +94,7 @@ p { margin: 0; }
 .topbar {
   position: sticky; top: 0; z-index: 55;
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  height: 66px; padding: 0 max(16px, calc((100% - 1140px) / 2));
+  height: 66px; padding: 0 max(var(--gutter), calc((100% - var(--wrap-max)) / 2));
   background: color-mix(in srgb, var(--paper) 84%, transparent);
   backdrop-filter: blur(16px) saturate(1.25);
   -webkit-backdrop-filter: blur(16px) saturate(1.25);
@@ -177,7 +180,7 @@ html[data-theme="dark"] .theme-btn .ic-moon { display: none; }
   transition: clip-path .6s var(--ease), visibility 0s .6s;
   visibility: hidden;
   display: flex; flex-direction: column; justify-content: space-between;
-  padding: 92px max(24px, calc((100% - 1140px) / 2)) calc(var(--nav-h) + 44px);
+  padding: 92px max(24px, calc((100% - var(--wrap-max)) / 2)) calc(var(--nav-h) + 44px);
   overflow-y: auto;
 }
 .menu-open .menu { clip-path: circle(150% at calc(100% - 38px) 32px); visibility: visible; transition: clip-path .7s var(--ease); }
@@ -258,6 +261,12 @@ html[data-theme="dark"] .theme-btn .ic-moon { display: none; }
 .btn.ghost:hover { --fg: var(--paper); color: var(--paper); }
 .btn.light { --bg: #FBFAF8; --fg: #073F49; }
 .btn.light::after { background: var(--mist); }
+/* Контурная кнопка на тёмной/цветной плашке (блок «Ждём вас в салоне»).
+   Раньше цвет задавался инлайн-стилем #fff, а заливка при наведении брала var(--ink) —
+   в тёмной теме это светлый цвет, и белый текст пропадал. Теперь заливка всегда светлая, текст — тёмный. */
+.btn.ghost.on-dark { --fg: #FBFAF8; color: #FBFAF8; box-shadow: inset 0 0 0 1.5px rgba(251, 250, 248, .9); }
+.btn.ghost.on-dark::after { background: #FBFAF8; }
+.btn.ghost.on-dark:hover, .btn.ghost.on-dark:focus-visible { --fg: #073F49; color: #073F49; }
 .btn.block { width: 100%; }
 .btn[disabled] { opacity: .5; pointer-events: none; }
 .btn-row { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -273,13 +282,14 @@ html[data-theme="dark"] .link { color: var(--mist); }
 /* ================= ГЛАВНАЯ: HERO С ВЫДЕЛЕННЫМИ ЦЕНАМИ И КОЛЛАЖЕМ ИЗ РЕНДЕРОВ ================= */
 .hero { padding-top: 12px; }
 .hero-panel {
+  --hero-pad: clamp(26px, 4.8vw, 50px);
   position: relative; overflow: hidden;
   border-radius: var(--r-l); background: linear-gradient(135deg, var(--teal) 0%, var(--teal-deep) 100%); color: #FBFAF8;
   display: grid; grid-template-columns: 1fr;
   box-shadow: var(--card-shadow);
 }
 .hero-copy {
-  position: relative; z-index: 2; padding: clamp(26px, 4.8vw, 50px);
+  position: relative; z-index: 2; padding: var(--hero-pad);
   display: grid; align-content: start; gap: 16px;
 }
 .hero-kicker { color: var(--mist); font-size: 14px; letter-spacing: .06em; text-transform: uppercase; }
@@ -297,6 +307,7 @@ html[data-theme="dark"] .link { color: var(--mist); }
   transition: transform .25s var(--spring), background .2s;
 }
 .hero-price-pill:hover { transform: translateY(-2px); background: var(--stone); }
+html[data-theme="dark"] .hero-price-pill:hover { background: #E2DBD2; }
 .hero-price-pill .cat-lbl { font-size: 14px; font-weight: 500; opacity: .82; }
 .hero-price-pill strong { font-size: clamp(16px, 2vw, 19px); font-weight: 600; color: #024A63; }
 
@@ -305,7 +316,7 @@ html[data-theme="dark"] .link { color: var(--mist); }
   --cut: 0%;
   position: relative; display: block; width: fit-content;
   font-size: clamp(56px, 15vw, 142px); font-weight: 600; line-height: .9; letter-spacing: -.035em;
-  text-transform: uppercase; margin-left: calc(-1 * clamp(26px, 4.8vw, 50px)); padding-left: clamp(26px, 4.8vw, 50px);
+  text-transform: uppercase; margin-left: calc(-1 * var(--hero-pad)); padding-left: var(--hero-pad);
   padding-block: .06em .1em; padding-right: .08em;
   animation: cutIn 1.3s .25s var(--ease) forwards;
 }
@@ -336,6 +347,8 @@ html[data-theme="dark"] .link { color: var(--mist); }
   box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
 }
 .collage-item.tall { grid-row: span 2; }
+.hero-collage .collage-item:nth-child(3) { grid-column: span 2; }
+.hero-collage .collage-item:nth-child(3) img { object-position: 50% 45%; }
 .collage-item img {
   width: 100%; height: 100%; object-fit: cover;
   transition: transform .65s var(--ease);
@@ -429,6 +442,18 @@ html[data-theme="dark"] .cat-tile-price { color: var(--mist); }
 .designer-card.accent .designer-list li::before {
   content: '—'; color: var(--mist); font-weight: 500;
 }
+/* Рендер справа от блока — только на широких экранах */
+.designer-media {
+  display: none; position: relative; overflow: hidden;
+  border-radius: var(--r-m); background: var(--stone); color: #FBFAF8; text-decoration: none;
+  box-shadow: 0 10px 28px -12px rgba(0, 0, 0, .3);
+}
+.designer-media img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 62%;
+  transition: transform .8s var(--ease);
+}
+.designer-media:hover img { transform: scale(1.04); }
+.designer-media .collage-tag { left: 14px; right: auto; bottom: 14px; gap: 14px; }
 
 /* ================= РАЗДЕЛ «НАШИ РАБОТЫ» (РЕАЛЬНЫЕ ПРОЕКТЫ) ================= */
 .works-grid {
@@ -489,7 +514,9 @@ html[data-theme="dark"] .steps li::before { border-color: var(--mist); color: va
   border-radius: var(--r-l); background: var(--taupe); color: #FBFAF8;
   padding: clamp(28px, 5vw, 52px); display: grid; gap: 20px;
 }
+.visit-copy { display: grid; gap: 10px; }
 .visit p { color: #F4EEE7; max-width: 34em; }
+.visit-media { display: none; }
 @media (min-width: 900px) { .visit { grid-template-columns: 1.4fr 1fr; align-items: end; } .visit .btn-row { justify-content: flex-end; } }
 
 /* ================= КАТАЛОГ И КАТЕГОРИИ (БЕЗ СЧЁТЧИКОВ МОДЕЛЕЙ) ================= */
@@ -507,6 +534,9 @@ html[data-theme="dark"] .steps li::before { border-color: var(--mist); color: va
 .cat-tab[aria-selected="true"], .cat-tab.active {
   background: var(--teal); color: #FBFAF8; border-color: var(--teal);
 }
+
+.showcase { display: grid; min-width: 0; }
+.showcase-main { min-width: 0; }
 
 .viewer {
   position: relative; border-radius: var(--r-l); overflow: hidden; background: var(--taupe);
@@ -552,7 +582,7 @@ html[data-theme="dark"] .viewer img.contain-mode {
 .swapping .poster > * { opacity: 0; transform: translateY(10px); }
 
 .viewer-variant {
-  position: absolute; z-index: 3; left: clamp(20px, 4vw, 44px); bottom: 18px;
+  position: absolute; z-index: 3; left: clamp(20px, 4vw, 44px); right: 130px; bottom: 18px;
   display: flex; gap: 6px; flex-wrap: wrap;
 }
 .viewer-variant button {
@@ -560,6 +590,7 @@ html[data-theme="dark"] .viewer img.contain-mode {
   background: rgba(20, 18, 16, .68); color: #FBFAF8; font-size: 13px; cursor: pointer;
   backdrop-filter: blur(8px); transition: background .2s, border-color .2s;
 }
+.viewer-variant button:hover { border-color: #FBFAF8; }
 .viewer-variant button.on { background: var(--teal); border-color: #FBFAF8; }
 
 .viewer-nav { position: absolute; z-index: 3; right: 14px; bottom: 14px; display: flex; gap: 8px; }
@@ -634,8 +665,8 @@ html[data-theme="dark"] .cat-card-media img.contain-mode {
   backdrop-filter: blur(6px);
 }
 .cat-card-var {
-  position: absolute; right: 10px; bottom: 10px;
-  display: flex; gap: 4px;
+  position: absolute; left: 10px; right: 10px; bottom: 10px;
+  display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px;
 }
 .cat-card-var button {
   padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.5);
@@ -908,11 +939,6 @@ html[data-theme="dark"] .btn-link { color: var(--mist); }
 
 .page-head { padding: 16px 0 20px; display: grid; gap: 10px; }
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
-  .cut-word { --cut: 58%; }
-}
-
 .hero-copy h1 { font-size: inherit; font-weight: inherit; }
 .hero-sub {
   display: block; margin-top: 14px; max-width: 15em;
@@ -924,3 +950,286 @@ html[data-theme="dark"] .btn-link { color: var(--mist); }
 input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 input[type="number"] { -moz-appearance: textfield; }
 .tabs .chip { white-space: nowrap; }
+
+/* =====================================================================
+   ШИРОКИЕ ЭКРАНЫ (компьютер): больше воздуха и использование боковых полей.
+   Мобильная и планшетная вёрстка выше не меняется.
+   ===================================================================== */
+@media (min-width: 1100px) {
+  /* Блок «Дизайнер приедет к вам»: справа появляется интерьерный рендер */
+  .designer-block {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    column-gap: clamp(36px, 3.4vw, 56px);
+    padding: clamp(40px, 3.6vw, 60px);
+  }
+  .designer-block > :not(.designer-media) { grid-column: 1; }
+  .designer-media { display: block; grid-column: 2; grid-row: 1 / span 3; min-height: 440px; }
+
+  /* Плашка «Ждём вас в салоне»: текст и кнопки слева, рендеры справа */
+  .visit {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: 1fr auto;
+    align-items: stretch; column-gap: clamp(36px, 3.6vw, 64px); row-gap: 32px;
+    min-height: 440px; padding: clamp(40px, 3.8vw, 64px);
+  }
+  .visit-copy { grid-column: 1; grid-row: 1; align-self: start; gap: 18px; }
+  .visit .btn-row { grid-column: 1; grid-row: 2; justify-content: flex-start; align-self: end; }
+  .visit h2 { font-size: clamp(34px, 2.7vw, 46px); max-width: 15em; }
+  .visit-media {
+    display: grid; grid-column: 2; grid-row: 1 / span 2;
+    grid-template-columns: 1.35fr 1fr; gap: 14px;
+    margin: calc(-1 * clamp(16px, 1.6vw, 28px)); margin-left: 0;
+  }
+  .visit-media img {
+    width: 100%; height: 100%; min-height: 0; object-fit: cover; border-radius: var(--r-m);
+    box-shadow: 0 14px 34px -14px rgba(0, 0, 0, .4);
+  }
+  .visit-media img:first-child { object-position: 50% 55%; }
+  .visit-media img:last-child { object-position: 50% 72%; }
+}
+
+@media (min-width: 1200px) {
+  :root { --wrap-max: 1520px; --gutter: clamp(40px, 4vw, 72px); }
+
+  .topbar { height: 76px; }
+  .menu { padding-top: 110px; }
+  .section { padding-block: clamp(72px, 6vw, 112px); }
+  .section-head-row { margin-bottom: 44px; }
+  .section-head-row .lead { max-width: 44em; }
+  h2 { font-size: clamp(38px, 2.9vw, 50px); }
+  .page-head { padding: 36px 0 32px; gap: 14px; }
+  .page-head h1 { font-size: clamp(52px, 4vw, 68px); }
+
+  /* Hero: выше, просторнее, коллаж-бенто вместо сетки 2×2 */
+  .hero { padding-top: 24px; }
+  .hero-panel {
+    --hero-pad: clamp(56px, 4.6vw, 84px);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    min-height: min(82vh, 780px);
+  }
+  .hero-copy { gap: 22px; }
+  .cut-word { font-size: clamp(120px, 8.6vw, 172px); }
+  .hero-sub { font-size: clamp(34px, 2.5vw, 44px); margin-top: 22px; }
+  .hero-collage {
+    margin: 24px; gap: 14px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .hero-collage .collage-item:nth-child(3) { grid-column: span 2; }
+  .hero-collage .collage-item:nth-child(3) img { object-position: 50% 45%; }
+  .collage-tag { left: 14px; right: 14px; bottom: 14px; padding: 8px 14px; font-size: 14px; }
+  .hero-under { grid-template-columns: 1.5fr 1fr; padding: 40px 8px 0; }
+  .hero-under .lead { font-size: 22px; max-width: 40em; }
+  .hero-under .btn, .visit .btn, .designer-block > .btn-row .btn { min-height: 56px; padding: 0 30px; font-size: 17px; }
+
+  /* Категории: крупнее фото */
+  .cat-showcase { gap: 24px; }
+  .cat-tile { grid-template-rows: clamp(280px, 21vw, 340px) auto; }
+  .cat-tile-body { padding: 22px 26px 26px; gap: 8px; }
+  .cat-tile-body h3 { font-size: 24px; }
+
+  /* Наши работы: бенто — две большие карточки сверху, три снизу */
+  .works-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 24px; }
+  .work-card { grid-column: span 2; }
+  .work-card:nth-child(-n+2) { grid-column: span 3; }
+  .work-card:nth-child(-n+2) .work-media { aspect-ratio: 16 / 10; }
+  .work-card:nth-child(-n+2) .work-body h3 { font-size: 23px; }
+  .work-body { padding: 20px 24px 24px; }
+  .work-body p { font-size: 15.5px; }
+
+  /* Каталог: витрина слева, описание модели — липкая колонка справа */
+  .showcase { grid-template-columns: minmax(0, 1fr) clamp(340px, 24vw, 420px); gap: 24px; align-items: start; }
+  .viewer { aspect-ratio: 16 / 10; max-height: min(74vh, 760px); }
+  .showcase .model-info {
+    margin-top: 0; position: sticky; top: 96px;
+    grid-template-columns: 1fr; align-items: start; align-content: start;
+    padding: 32px; gap: 28px; border-radius: var(--r-l); box-shadow: var(--card-shadow);
+  }
+  .showcase .model-info .note { font-size: 20px; line-height: 1.45; }
+  .showcase .facts { flex-direction: column; gap: 10px; }
+  .showcase .model-info .btn-row { flex-direction: column; }
+  .showcase .model-info .btn { width: 100%; }
+  .cat-tabs { margin-bottom: 24px; }
+  .cat-grid { grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 24px; margin-top: 28px; }
+  .cat-card-media { aspect-ratio: 5 / 4; }
+  .pricelist-box { margin-top: 48px; padding: 40px; }
+  .pricelist-grid { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; }
+
+  /* Калькулятор и контакты */
+  .calc { grid-template-columns: minmax(0, 1fr) 440px; gap: 72px; }
+  .calc .result { top: 96px; padding: 32px; }
+  .contacts { gap: 80px; }
+
+  .site-footer { margin-top: 72px; padding: 36px 0 28px; }
+}
+
+@media (min-width: 1700px) {
+  .cat-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .cut-word { --cut: 58%; }
+}
+
+/* ================= БЛОК «КРЕДИТ НА РОДНЫЯ ТАВАРЫ (4%)» И ДИСКЛЕЙМЕР ОФЕРТЫ ================= */
+.credit-block {
+  border-radius: var(--r-l);
+  background: var(--white);
+  border: 1.5px solid color-mix(in srgb, var(--teal) 32%, var(--line));
+  padding: clamp(24px, 4.5vw, 46px);
+  box-shadow: var(--card-shadow);
+  display: grid;
+  gap: 24px;
+}
+.credit-head {
+  display: grid;
+  gap: 10px;
+  max-width: 48em;
+}
+.credit-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--teal) 14%, var(--stone));
+  color: var(--teal);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .03em;
+}
+html[data-theme="dark"] .credit-badge {
+  color: var(--mist);
+  background: color-mix(in srgb, var(--teal) 28%, var(--stone));
+}
+.credit-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .credit-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1060px) {
+  .credit-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.credit-card {
+  padding: 18px 20px;
+  border-radius: var(--r-m);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+.credit-card strong {
+  font-size: 21px;
+  font-weight: 600;
+  color: var(--teal);
+}
+html[data-theme="dark"] .credit-card strong { color: var(--mist); }
+.credit-card span {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+.credit-examples {
+  padding: 18px 20px;
+  border-radius: var(--r-m);
+  background: color-mix(in srgb, var(--stone) 65%, var(--paper));
+  border: 1px solid var(--line);
+  display: grid;
+  gap: 14px;
+}
+.credit-ex-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px 16px;
+}
+.credit-ex-head h3 {
+  font-size: 16.5px;
+  font-weight: 500;
+}
+.credit-ex-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 720px) {
+  .credit-ex-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.credit-ex-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: var(--r-s);
+  background: var(--white);
+  border: 1px solid var(--line);
+  text-decoration: none;
+  transition: border-color .2s, transform .2s var(--spring);
+}
+.credit-ex-item:hover {
+  border-color: var(--teal);
+  transform: translateY(-2px);
+}
+.credit-ex-item span { font-size: 14.5px; color: var(--ink-soft); }
+.credit-ex-item b { font-size: 16px; font-weight: 600; color: var(--teal); white-space: nowrap; }
+html[data-theme="dark"] .credit-ex-item b { color: var(--mist); }
+
+.cat-card-credit {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--teal) 12%, var(--stone));
+  color: var(--teal);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background .2s, color .2s;
+}
+.cat-card-credit:hover {
+  background: var(--teal);
+  color: #FBFAF8;
+}
+html[data-theme="dark"] .cat-card-credit {
+  color: var(--mist);
+  background: color-mix(in srgb, var(--teal) 26%, var(--stone));
+}
+html[data-theme="dark"] .cat-card-credit:hover {
+  background: var(--teal);
+  color: #FBFAF8;
+}
+.model-credit-line {
+  padding: 8px 12px;
+  border-radius: var(--r-s);
+  background: color-mix(in srgb, var(--teal) 10%, var(--stone));
+  color: var(--ink);
+  width: fit-content;
+}
+.calc-subnote {
+  margin-top: -6px;
+  line-height: 1.35;
+}
+.limit-warn {
+  padding: 12px 14px;
+  border-radius: var(--r-s);
+  background: color-mix(in srgb, var(--err) 12%, var(--stone));
+  border: 1px solid color-mix(in srgb, var(--err) 35%, transparent);
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.offer-disclaimer {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}

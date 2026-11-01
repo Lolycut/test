@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Калькулятор рассрочки, доставки и проёма двери — ИЗЮМ</title>
-<meta name="description" content="Рассчитайте ежемесячный платёж в рассрочку, доставку по Минску и Беларуси и проверьте, пройдёт ли мебель в дверной проём.">
+<title>Калькулятор кредита «На родныя тавары» (4%), рассрочки и доставки — ИЗЮМ</title>
+<meta name="description" content="Рассчитайте ежемесячный платёж по кредиту «На родныя тавары» под 4% годовых (до 3 лет), рассрочку, доставку по Минску и Беларуси и проверьте проём двери.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://izum-home.by/calculator.html">
 <meta name="theme-color" content="#095562">
@@ -12,8 +12,8 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ru_BY">
 <meta property="og:site_name" content="ИЗЮМ">
-<meta property="og:title" content="Калькулятор рассрочки, доставки и проёма двери — ИЗЮМ">
-<meta property="og:description" content="Рассчитайте ежемесячный платёж в рассрочку, доставку по Минску и Беларуси и проверьте, пройдёт ли мебель в дверной проём.">
+<meta property="og:title" content="Калькулятор кредита «На родныя тавары» (4%), рассрочки и доставки — ИЗЮМ">
+<meta property="og:description" content="Рассчитайте ежемесячный платёж по кредиту «На родныя тавары» под 4% годовых (до 3 лет), рассрочку, доставку по Минску и Беларуси и проверьте проём двери.">
 <meta property="og:url" content="https://izum-home.by/calculator.html">
 <meta property="og:image" content="https://izum-home.by/assets/img/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -80,11 +80,11 @@
 <main id="main">
 <div class="wrap">
   <div class="page-head">
-    <h1>Калькулятор рассрочки и доставки</h1>
-    <p class="lead">Предварительный расчёт. Действующие условия рассрочки и доставки уточняйте по телефону <a class="link num" href="tel:+375296709784">+375 (29) 670-97-84</a>.</p>
+    <h1>Калькулятор кредита «На родныя тавары», рассрочки и доставки</h1>
+    <p class="lead">Рассчитайте ориентировочный ежемесячный платёж по льготному кредиту «На родныя тавары» под 4% годовых (ОАО «АСБ Беларусбанк») или в рассрочку, а также стоимость доставки. Расчёт носит информационный характер и не является публичной офертой.</p>
   </div>
   <div class="tabs" role="tablist" aria-label="Что посчитать">
-    <button class="chip" role="tab" id="t-pay" aria-controls="pay" aria-selected="true">Рассрочка и доставка</button>
+    <button class="chip" role="tab" id="t-pay" aria-controls="pay" aria-selected="true">Кредит 4% · Рассрочка · Доставка</button>
     <button class="chip" role="tab" id="t-door" aria-controls="door" aria-selected="false" tabindex="-1">Пройдёт в дверь?</button>
   </div>
 
@@ -92,27 +92,34 @@
     <div class="calc">
       <div style="display:grid;gap:22px">
         <p class="note-box" id="k-from" hidden></p>
+        <div class="field"><span class="lab">Программа оплаты</span><div class="chips" id="k-prog"></div></div>
         <div class="field"><label for="k-sum">Стоимость выбранной мебели</label><div class="input-suffix"><input class="input num" id="k-sum" type="number" inputmode="numeric" min="0" step="10" value="3920"><span>BYN</span></div></div>
         <div class="field">
           <div class="ctrl-head"><label for="k-first">Первый взнос</label><output id="o-first" class="num"></output></div>
-          <input type="range" id="k-first" min="0" max="50" step="5" value="20">
+          <input type="range" id="k-first" min="0" max="50" step="5" value="0">
+          <span class="muted small" id="k-first-hint">По кредиту «На родныя тавары» первоначальный взнос не требуется (от 0%).</span>
         </div>
-        <div class="field"><span class="lab">Срок рассрочки</span><div class="chips" id="k-term"></div></div>
+        <p class="limit-warn" id="k-limit-warn" hidden>Обратите внимание: максимальная сумма кредита «На родныя тавары» на мебель составляет <strong>300 базовых величин (13 500 BYN)</strong>. Сумму свыше лимита можно внести собственными средствами (первым взносом).</p>
+        <div class="field"><span class="lab" id="k-term-lab">Срок кредита (под 4% годовых)</span><div class="chips" id="k-term"></div></div>
         <div class="field"><span class="lab">Зона доставки</span><div class="chips" id="k-zone"></div></div>
         <div class="field"><span class="lab">Подъём на этаж</span><div class="chips" id="k-lift"></div></div>
         <div class="field"><label for="k-floor">Этаж</label><input class="input num" id="k-floor" type="number" inputmode="numeric" min="1" max="40" value="5" style="max-width:140px"></div>
       </div>
       <aside class="result" aria-live="polite">
-        <span class="muted">Платёж в месяц</span>
+        <span class="muted" id="r-month-label">Ориентировочный платёж в месяц</span>
         <span class="big num"><span id="r-month">0</span><small>BYN</small></span>
+        <p class="calc-subnote small muted" id="r-month-sub"></p>
         <dl class="rows">
+          <div><dt>Программа</dt><dd id="r-prog">Кредит «На родныя тавары» (4%)</dd></div>
           <div><dt>Срок</dt><dd id="r-term"></dd></div>
+          <div><dt id="r-loan-label">Сумма кредита</dt><dd class="num"><span id="r-loan">0</span> BYN</dd></div>
           <div><dt>Первый взнос</dt><dd class="num"><span id="r-first">0</span> BYN</dd></div>
-          <div><dt>Переплата</dt><dd class="num"><span id="r-over">0</span> BYN</dd></div>
+          <div><dt id="r-over-label">Проценты за срок (4% годовых)</dt><dd class="num"><span id="r-over">0</span> BYN</dd></div>
           <div><dt>Доставка и подъём</dt><dd class="num"><span id="r-del">0</span> BYN</dd></div>
-          <div><dt><b>Итого</b></dt><dd class="num"><b><span id="r-total">0</span> BYN</b></dd></div>
+          <div><dt><b>Итого с доставкой</b></dt><dd class="num"><b><span id="r-total">0</span> BYN</b></dd></div>
         </dl>
-        <button class="btn block" type="button" data-lead="Расчёт рассрочки">Оформить заявку</button>
+        <button class="btn block" type="button" id="r-lead-btn" data-lead="Расчёт кредита «На родныя тавары»">Оставить заявку</button>
+        <p class="offer-disclaimer">Расчёт носит исключительно справочно-информационный характер и <strong>не является публичной офертой</strong> (ст. 407 ГК РБ).</p>
       </aside>
     </div>
   </section>
@@ -137,11 +144,62 @@
       </aside>
     </div>
   </section>
+
+  <section class="section" id="credit-info" aria-labelledby="h-credit-details" style="padding-bottom:12px">
+    <div class="credit-block">
+      <div class="credit-head">
+        <span class="credit-badge">Условия программы · ОАО «АСБ Беларусбанк»</span>
+        <h2 id="h-credit-details" style="font-size:clamp(24px,3.6vw,36px)">Кредит «На родныя тавары» под 4% годовых в салоне «ИЗЮМ»</h2>
+        <p class="lead">Салон мягкой мебели «ИЗЮМ» (ООО «АЛБРО») подключён к государственной программе потребительского кредитования «На родныя тавары» (постановление Совета Министров Республики Беларусь от 29.12.2023 № 992 с изменениями по постановлениям № 809 и № 139).</p>
+      </div>
+      <div class="credit-grid">
+        <div class="credit-card">
+          <strong class="num">4% годовых</strong>
+          <span>Фиксированная процентная ставка в белорусских рублях на весь срок действия кредитного договора</span>
+        </div>
+        <div class="credit-card">
+          <strong class="num">До 3 лет (36 мес.)</strong>
+          <span>Максимальный срок возврата (погашения) кредита для категории «Мебель»</span>
+        </div>
+        <div class="credit-card">
+          <strong class="num">До 300 базовых величин</strong>
+          <span>Максимальная сумма кредита на мебель (до 13 500 BYN в 2026 г.) в пределах платёжеспособности заявителя</span>
+        </div>
+        <div class="credit-card">
+          <strong>Без поручителей и страховок</strong>
+          <span>Способ обеспечения — неустойка. Досрочное погашение (полное или частичное) — без комиссий и штрафов</span>
+        </div>
+      </div>
+
+      <div class="designer-cols" style="margin-top:8px">
+        <div class="designer-card">
+          <h3>Как оформить мебель в кредит (4 шага):</h3>
+          <ol class="prose" style="padding-left:20px;margin:0;display:grid;gap:10px;font-size:15.5px;color:var(--ink-soft)">
+            <li><strong style="color:var(--ink)">Выберите мебель в салоне «ИЗЮМ»:</strong> определитесь с моделью, размерами и тканью в ТЦ «Корона Дом» (пав. 120) или при выезде дизайнера. Менеджер подготовит договор и счёт-фактуру с номером сертификата продукции собственного производства.</li>
+            <li><strong style="color:var(--ink)">Подайте заявку в Беларусбанк:</strong> оформите заявку онлайн (в М-Банкинге, Интернет-банкинге, Онлайн-банке Belarusbank через МСИ) либо обратитесь со счёт-фактурой в любое отделение ОАО «АСБ Беларусбанк».</li>
+            <li><strong style="color:var(--ink)">Одобрение и перечисление средств:</strong> после подписания кредитного договора банк безналично перечисляет средства на расчётный счёт салона (без комиссии за перечисление).</li>
+            <li><strong style="color:var(--ink)">Получение мебели и документов:</strong> мы изготавливаем и доставляем мебель вместе с документами, подтверждающими факт получения товара для банка.</li>
+          </ol>
+        </div>
+        <div class="designer-card">
+          <h3>Важные условия и документы:</h3>
+          <ul class="designer-list" style="font-size:15.5px;color:var(--ink-soft)">
+            <li>Кредит предоставляется дееспособным физическим лицам (гражданам РБ и лицам с ВНЖ), постоянно проживающим и имеющим доход в Республике Беларусь.</li>
+            <li>Справка о доходах не требуется, если заработная плата зачисляется на счёт в ОАО «АСБ Беларусбанк» либо при оформлении согласия на проверку дохода через базу ФСЗН (ОАИС).</li>
+            <li>Погашение основного долга осуществляется ежемесячно равными долями со следующего месяца после выдачи кредита; проценты (4% годовых) начисляются на фактический остаток задолженности.</li>
+            <li>Кредит действует на модели мебели белорусского производства, имеющие действующий сертификат продукции собственного производства Республики Беларусь.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="offer-disclaimer"><strong>Правовое уведомление:</strong> вся представленная на сайте информация о программе потребительского кредитования «На родныя тавары», ставках, сроках и предварительном расчёте ежемесячных платежей носит исключительно справочно-информационный характер и <strong>не является публичной офертой</strong> (в соответствии со ст. 407 Гражданского кодекса Республики Беларусь). Кредитодателем выступает ОАО «АСБ Беларусбанк» (лицензия Национального банка Республики Беларусь на осуществление банковской деятельности № 1 от 09.06.2025 г., <a class="link" href="https://belarusbank.by/fizicheskim_licam/kredit/consumer/kredit-na-rodnyya-tavary/" target="_blank" rel="noopener">belarusbank.by</a>). Окончательные условия кредитования и решение о предоставлении кредита определяются банком после оценки кредитоспособности заявителя.</p>
+    </div>
+  </section>
 </div>
 </main>
 <footer class="wrap site-footer small">
   <div class="footer-row">
-    <span>© 2026 Магазин мягкой мебели «ИЗЮМ» · <a class="link num" href="tel:+375296709784">+375 (29) 670-97-84</a> · <a class="link" href="https://www.instagram.com/izyum_home/" target="_blank" rel="noopener">Instagram @izyum_home</a></span>
+    <span>© 2026 Салон мягкой мебели «ИЗЮМ» · <a class="link num" href="tel:+375296709784">+375 (29) 670-97-84</a> · <a class="link" href="https://www.instagram.com/izyum_home/" target="_blank" rel="noopener">Instagram @izyum_home</a></span>
     <div class="footer-links">
       <a class="link" href="catalog.html?cat=sofas">Диваны</a>
       <a class="link" href="catalog.html?cat=beds">Кровати</a>

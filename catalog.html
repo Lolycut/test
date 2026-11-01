@@ -86,30 +86,35 @@
 
   <div class="cat-tabs" role="tablist" aria-label="Категории каталога" data-cat-tabs></div>
 
-  <section class="viewer" aria-roledescription="карусель" aria-label="Витрина моделей">
-    <div class="poster" aria-live="polite">
-      <span class="kind" data-kind>ДИВАН</span>
-      <span class="name" data-name>Noah</span>
-      <span class="size" data-size>2400 мм</span>
-      <span class="price"><small>от</small><span data-price class="num">3 400</span> BYN</span>
-    </div>
-    <div class="viewer-variant" data-viewer-variants hidden></div>
-    <div class="viewer-nav">
-      <button class="round" type="button" data-prev aria-label="Предыдущая модель"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
-      <button class="round" type="button" data-next aria-label="Следующая модель"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
-    </div>
-  </section>
+  <div class="showcase">
+    <div class="showcase-main">
+      <section class="viewer" aria-roledescription="карусель" aria-label="Витрина моделей">
+        <div class="poster" aria-live="polite">
+          <span class="kind" data-kind>ДИВАН</span>
+          <span class="name" data-name>Noah</span>
+          <span class="size" data-size>2400 мм</span>
+          <span class="price"><small>от</small><span data-price class="num">3 400</span> BYN</span>
+        </div>
+        <div class="viewer-variant" data-viewer-variants hidden></div>
+        <div class="viewer-nav">
+          <button class="round" type="button" data-prev aria-label="Предыдущая модель"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="round" type="button" data-next aria-label="Следующая модель"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+      </section>
 
-  <div class="model-strip" aria-label="Быстрый выбор модели"></div>
-
-  <div class="model-info">
-    <div style="display:grid;gap:12px">
-      <p class="note" data-note></p>
-      <ul class="facts" data-facts></ul>
+      <div class="model-strip" aria-label="Быстрый выбор модели"></div>
     </div>
-    <div class="btn-row">
-      <button class="btn" type="button" data-lead data-ask-model>Рассчитать под мой размер</button>
-      <button class="btn ghost" type="button" data-lead="Выезд дизайнера на дом">Вызвать дизайнера</button>
+
+    <div class="model-info">
+      <div style="display:grid;gap:12px">
+        <p class="note" data-note></p>
+        <ul class="facts" data-facts></ul>
+        <p class="model-credit-line small" data-credit-info hidden></p>
+      </div>
+      <div class="btn-row">
+        <button class="btn" type="button" data-lead data-ask-model>Оставить заявку</button>
+        <button class="btn ghost" type="button" data-lead="Выезд дизайнера на дом">Вызвать дизайнера</button>
+      </div>
     </div>
   </div>
 
@@ -124,15 +129,16 @@
 
     <div class="pricelist-box">
       <h3 style="font-size:22px">Полный прайс-лист моделей выбранной категории</h3>
-      <p class="muted small" style="margin-top:4px">Цены указаны за базовый размер (диваны — 2400 мм, кровати — спальное место 1600 × 2000 мм). Изготавливаем в любом размере и ткани.</p>
+      <p class="muted small" style="margin-top:4px">Цены указаны за базовый размер (диваны — 2400 мм, кровати — спальное место 1600 × 2000 мм). Изготавливаем в любом размере и ткани. Доступно оформление в кредит «На родныя тавары» под 4% годовых (до 36 мес.).</p>
       <div class="pricelist-grid" data-pricelist-grid></div>
+      <p class="offer-disclaimer" style="margin-top:16px">* Указанные на странице цены, условия кредита «На родныя тавары» (ОАО «АСБ Беларусбанк», фиксированная ставка 4% годовых, срок до 36 месяцев, сумма до 300 базовых величин) и расчёт ежемесячных платежей носят справочно-информационный характер и <strong>не являются публичной офертой</strong> (ст. 407 ГК РБ). Наличие сертификата собственного производства РБ по конкретной модели и точный расчёт уточняйте у менеджера салона.</p>
     </div>
   </section>
 </div>
 </main>
 <footer class="wrap site-footer small">
   <div class="footer-row">
-    <span>© 2026 Магазин мягкой мебели «ИЗЮМ» · <a class="link num" href="tel:+375296709784">+375 (29) 670-97-84</a> · <a class="link" href="https://www.instagram.com/izyum_home/" target="_blank" rel="noopener">Instagram @izyum_home</a></span>
+    <span>© 2026 Салон мягкой мебели «ИЗЮМ» · <a class="link num" href="tel:+375296709784">+375 (29) 670-97-84</a> · <a class="link" href="https://www.instagram.com/izyum_home/" target="_blank" rel="noopener">Instagram @izyum_home</a></span>
     <div class="footer-links">
       <a class="link" href="catalog.html?cat=sofas">Диваны</a>
       <a class="link" href="catalog.html?cat=beds">Кровати</a>

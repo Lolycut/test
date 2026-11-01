@@ -29,7 +29,9 @@ IZYUM.CATEGORIES = [
   { id: 'chairs',    name: 'Стулья',        kindLabel: 'СТУЛ' }
 ];
 
-/* Модели с фотографиями и рендерами для витрины и карточек каталога */
+/* Модели с интерьерными рендерами для витрины и карточек каталога.
+   pos — точка кадрирования (object-position) для вертикальных интерьерных рендеров;
+   у варианта можно задать свои contain / pos. */
 IZYUM.MODELS = [
   /* ---------- ДИВАНЫ (база 2400 мм) ---------- */
   {
@@ -99,14 +101,48 @@ IZYUM.MODELS = [
 
   /* ---------- КРОВАТИ (спальное место 1600 × 2000 мм) ---------- */
   {
+    id: 'alaska', cat: 'beds', kind: 'КРОВАТЬ', name: 'Alaska', price: 2410,
+    baseDim: '1600 × 2000 мм', img: 'assets/img/bed-alaska.webp', pos: '50% 78%',
+    note: 'Кровать с мягким изголовьем и объёмной мягкой царгой со скруглёнными углами.',
+    tags: ['1600 × 2000 мм в базе', 'Мягкая царга', 'Индивидуальный размер']
+  },
+  {
+    id: 'flow', cat: 'beds', kind: 'КРОВАТЬ', name: 'Flow', price: 2550,
+    baseDim: '1600 × 2000 мм', img: 'assets/img/bed-flow.webp', pos: '50% 70%',
+    note: 'Кровать со скруглённым мягким изголовьем-подушкой и спокойным лаконичным силуэтом.',
+    tags: ['1600 × 2000 мм в базе', 'Скруглённое изголовье', 'Выбор ткани']
+  },
+  {
+    id: 'grace', cat: 'beds', kind: 'КРОВАТЬ', name: 'Grace', price: 2550,
+    baseDim: '1600 × 2000 мм', img: 'assets/img/bed-grace.webp', pos: '50% 72%',
+    note: 'Лёгкая кровать с невысоким мягким изголовьем на тонких металлических опорах.',
+    tags: ['1600 × 2000 мм в базе', 'Металлические опоры', 'Невысокое изголовье']
+  },
+  {
     id: 'tatlin', cat: 'beds', kind: 'КРОВАТЬ', name: 'Tatlin (Кровать)', price: 2700,
     baseDim: '1600 × 2000 мм', img: 'assets/img/tatlin.webp',
     note: 'Мягкая двуспальная кровать с открытым швом-кантом и высоким изголовьем из двух подушек.',
     tags: ['1600 × 2000 мм в базе', 'Подъёмный механизм', 'Бельевой короб']
   },
   {
+    id: 'wave', cat: 'beds', kind: 'КРОВАТЬ', name: 'Wave', price: 3180,
+    baseDim: '1600 × 2000 мм', img: 'assets/img/bed-wave-caramel.webp', pos: '50% 74%',
+    variants: [
+      { label: 'Карамель', img: 'assets/img/bed-wave-caramel.webp' },
+      { label: 'Голубой', img: 'assets/img/bed-wave-blue.webp' },
+      { label: 'Молочный', img: 'assets/img/bed-wave-milk.webp' }
+    ],
+    note: 'Кровать с волнообразным контуром мягкого изголовья — уместна и в классике, и в современном интерьере.',
+    tags: ['1600 × 2000 мм в базе', 'Волнистое изголовье', '3 варианта на фото']
+  },
+  {
     id: 'cloud-bed', cat: 'beds', kind: 'КРОВАТЬ', name: 'Cloud (Кровать)', price: 3290,
-    baseDim: '1600 × 2000 мм', img: 'assets/img/bonaldo.webp', contain: true,
+    baseDim: '1600 × 2000 мм', img: 'assets/img/bed-cloud.webp', pos: '50% 62%',
+    variants: [
+      { label: 'Вид спереди', img: 'assets/img/bed-cloud.webp' },
+      { label: 'В ракурсе', img: 'assets/img/bed-cloud-angle.webp', pos: '50% 55%' },
+      { label: 'Фактура', img: 'assets/img/bed-cloud-detail.webp', pos: '50% 50%' }
+    ],
     note: 'Кровать с широкими мягкими бортами-подушками по периметру и уютным высоким изголовьем со съёмными чехлами.',
     tags: ['1600 × 2000 мм в базе', 'Мягкие борта', 'Съёмные чехлы']
   },
@@ -126,19 +162,23 @@ IZYUM.MODELS = [
   },
   {
     id: 'cloud-chair', cat: 'armchairs', kind: 'КРЕСЛО', name: 'Cloud (Кресло)', price: 2210,
-    baseDim: '1080 × 1020 мм', img: 'assets/img/cloud-armchair.webp',
-    altImg: 'assets/img/cloud-armchair-velour.webp',
+    baseDim: '1080 × 1020 мм', img: 'assets/img/cloud-armchair-powder.webp', pos: '50% 76%',
+    altImg: 'assets/img/cloud-armchair-mustard.webp',
     variants: [
-      { label: 'Белое букле', img: 'assets/img/cloud-armchair.webp' },
-      { label: 'Песочный велюр', img: 'assets/img/cloud-armchair-velour.webp' }
+      { label: 'Пудровый', img: 'assets/img/cloud-armchair-powder.webp', pos: '50% 76%' },
+      { label: 'Горчичный', img: 'assets/img/cloud-armchair-mustard.webp', pos: '50% 90%' }
     ],
-    contain: true,
     note: 'Лаунж-кресло с объёмными подушками из коллекции Cloud. Доступно в букле, велюре и рогожке.',
     tags: ['Коллекция Cloud', '2 варианта на фото', 'Глубокий лаунж']
   },
   {
     id: 'lacoon', cat: 'armchairs', kind: 'КРЕСЛО', name: 'Lacoon', price: 3200,
-    baseDim: 'Ø 1300 мм', img: 'assets/img/lacoon.webp', contain: true,
+    baseDim: 'Ø 1300 мм', img: 'assets/img/lacoon-beige.webp', pos: '50% 60%',
+    variants: [
+      { label: 'Бежевый', img: 'assets/img/lacoon-beige.webp', pos: '50% 60%' },
+      { label: 'Белый', img: 'assets/img/lacoon-white.webp', pos: '50% 70%' },
+      { label: 'Лиловый', img: 'assets/img/lacoon-lilac.webp', pos: '50% 85%' }
+    ],
     note: 'Глубокое круглое кресло-лавсит на поворотном латунном цоколе с комплектом подушек.',
     tags: ['Лавсит Ø 1300 мм', 'Поворотный цоколь', 'Комплект подушек']
   },
@@ -233,6 +273,38 @@ IZYUM.PRICELIST = [
 ];
 
 IZYUM.CALC = {
+  programs: [
+    {
+      id: 'rodnye',
+      name: 'Кредит «На родныя тавары» · 4%',
+      shortName: 'Кредит «На родныя тавары» (4% годовых)',
+      rate: 0.04,
+      maxBV: 300,
+      bvAmount: 45,
+      maxLoanSum: 13500,
+      defTerm: 36,
+      defFirst: 0,
+      terms: [
+        { months: 12, label: '12 мес (1 год)' },
+        { months: 24, label: '24 мес (2 года)' },
+        { months: 36, label: '36 мес (3 года)' }
+      ]
+    },
+    {
+      id: 'installment',
+      name: 'Рассрочка',
+      shortName: 'Рассрочка',
+      rate: 0,
+      defTerm: 6,
+      defFirst: 20,
+      terms: [
+        { months: 3,  over: 0,    label: '3 мес' },
+        { months: 6,  over: 0,    label: '6 мес' },
+        { months: 12, over: 0.08, label: '12 мес' },
+        { months: 24, over: 0.16, label: '24 мес' }
+      ]
+    }
+  ],
   terms: [
     { months: 3,  over: 0 },
     { months: 6,  over: 0 },
@@ -246,6 +318,29 @@ IZYUM.CALC = {
   ],
   liftFlat: 20,
   stairsPerFloor: 8
+};
+
+/* Расчёт кредита «На родныя тавары» (ОАО «АСБ Беларусбанк», 4% годовых, до 36 мес. на мебель):
+   основной долг погашается ежемесячно равными долями, проценты начисляются на остаток задолженности.
+   Носит справочно-информационный характер и не является публичной офертой. */
+IZYUM.calcRodnye = function (loanSum, months) {
+  var L = Math.max(0, +loanSum || 0);
+  var m = Math.max(1, +months || 36);
+  var rate = 0.04;
+  var over = Math.round(L * (rate / 12) * (m + 1) / 2);
+  var monthlyAvg = L > 0 ? Math.ceil((L + over) / m) : 0;
+  var firstMonth = L > 0 ? Math.ceil((L / m) + L * (rate / 12)) : 0;
+  var lastMonth = L > 0 ? Math.ceil((L / m) + (L / m) * (rate / 12)) : 0;
+  return {
+    loan: L,
+    months: m,
+    rate: rate,
+    over: over,
+    monthly: monthlyAvg,
+    firstMonth: firstMonth,
+    lastMonth: lastMonth,
+    total: L + over
+  };
 };
 
 IZYUM.fmt = function (n) {
