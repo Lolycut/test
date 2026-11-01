@@ -458,7 +458,7 @@ html[data-theme="dark"] .cat-tile-price { color: var(--mist); }
 /* ================= РАЗДЕЛ «НАШИ РАБОТЫ» (РЕАЛЬНЫЕ ПРОЕКТЫ) ================= */
 .works-grid {
   display: grid; gap: 18px;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
 }
 .work-card {
   border-radius: var(--r-m); background: var(--white); border: 1px solid var(--line);
@@ -632,7 +632,7 @@ html[data-theme="dark"] .viewer img.contain-mode {
 /* Сетка карточек каталога */
 .cat-grid {
   display: grid; gap: 20px;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
   margin-top: 24px;
 }
 .cat-card {
@@ -696,7 +696,7 @@ html[data-theme="dark"] .cat-card-price { color: var(--mist); }
 }
 .pricelist-grid {
   display: grid; gap: 12px; margin-top: 16px;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
 }
 .pricelist-row {
   display: grid; gap: 10px;
@@ -709,12 +709,13 @@ html[data-theme="dark"] .cat-card-price { color: var(--mist); }
   display: flex; justify-content: space-between; align-items: center; gap: 12px;
 }
 .pricelist-row strong { font-size: 17px; font-weight: 600; }
-.pricelist-row .pl-sub { font-size: 13.5px; color: var(--ink-soft); white-space: nowrap; }
+.pricelist-row .pl-sub { font-size: 13.5px; color: var(--ink-soft); white-space: normal; line-height: 1.35; }
+.pricelist-btm .btn { flex: none; white-space: nowrap; }
 .pricelist-row .pl-price { font-size: 16px; font-weight: 600; color: var(--teal); white-space: nowrap; }
 html[data-theme="dark"] .pricelist-row .pl-price { color: var(--mist); }
 
 /* ================= КАЛЬКУЛЯТОР ================= */
-.tabs { display: inline-grid; grid-auto-flow: column; gap: 6px; margin-bottom: 24px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
 .calc { display: grid; gap: 28px; }
 @media (min-width: 980px) { .calc { grid-template-columns: 1fr 380px; gap: 48px; align-items: start; } .calc .result { position: sticky; top: 82px; } }
 .panel[hidden] { display: none; }
@@ -1232,4 +1233,36 @@ html[data-theme="dark"] .cat-card-credit:hover {
   line-height: 1.45;
   border-top: 1px solid var(--line);
   padding-top: 12px;
+}
+
+/* Мобильная адаптация кнопок, баннера установки и бейджей (320px–540px) */
+.install .btn {
+  flex: none;
+  min-height: 42px;
+  padding: 0 18px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.credit-badge {
+  max-width: 100%;
+  border-radius: 12px;
+  line-height: 1.35;
+}
+.credit-ex-item {
+  flex-wrap: wrap;
+}
+@media (max-width: 540px) {
+  .hero-under .btn-row,
+  .credit-block .btn-row,
+  .designer-block .btn-row,
+  .model-info .btn-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hero-under .btn-row .btn,
+  .credit-block .btn-row .btn,
+  .designer-block .btn-row .btn,
+  .model-info .btn-row .btn {
+    width: 100%;
+  }
 }

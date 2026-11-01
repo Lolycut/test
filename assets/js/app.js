@@ -412,7 +412,18 @@
 
   /* ---------- PWA ---------- */
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
-    window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js?v=20261102').then(function (reg) {
+        if (reg && reg.update) reg.update();
+      }).catch(function () {});
+      if (window.caches && caches.keys) {
+        caches.keys().then(function (keys) {
+          keys.forEach(function (k) {
+            if (k !== 'izyum-v7') caches.delete(k);
+          });
+        }).catch(function () {});
+      }
+    });
   }
   var deferred;
   window.addEventListener('beforeinstallprompt', function (e) {
