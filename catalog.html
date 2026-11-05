@@ -38,7 +38,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20261102">
 <style id="izyum-v20261102">
 .hero-collage .collage-item:nth-child(3){grid-column:span 2}
 .hero-collage .collage-item:nth-child(3) img{object-position:50% 45%}
@@ -52,7 +51,7 @@
 html[data-theme="dark"] .credit-badge{color:var(--mist,#B5D2D9)}
 .credit-grid{display:grid;gap:12px;grid-template-columns:1fr}
 @media(min-width:640px){.credit-grid{grid-template-columns:repeat(2,1fr)}}
-@media(min-width:1060px){.credit-grid{grid-template-columns:repeat(4,1fr)}}
+
 .credit-card{padding:16px 18px;border-radius:var(--r-m,18px);background:var(--paper,#EFEBE6);border:1px solid var(--line,rgba(42,35,29,.12));display:grid;gap:6px;align-content:start}
 .credit-card strong{display:block;font-size:20px;font-weight:600;color:var(--teal,#095562)}
 html[data-theme="dark"] .credit-card strong{color:var(--mist,#B5D2D9)}
@@ -80,10 +79,20 @@ html[data-theme="dark"] .cat-card-credit{color:var(--mist,#B5D2D9)}
   .hero-under .btn-row .btn,.credit-block .btn-row .btn,.designer-block .btn-row .btn,.model-info .btn-row .btn{width:100%}
 }
 </style>
+<link rel="stylesheet" href="assets/css/style.css?v=20261102">
+
 </head><body>
 <a class="sr" href="#main">К содержимому</a>
 <header class="topbar">
   <a class="logo" href="index.html" aria-label="ИЗЮМ, на главную"><span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 2.5v11l8-11v11"/></svg></span><span>изюм</span></a>
+  <nav class="desk-nav" aria-label="Навигация для компьютера">
+    <a href="index.html">Главная</a>
+    <a href="catalog.html" aria-current="page">Каталог</a>
+    <a href="index.html#credit">Кредит 4%</a>
+    <a href="index.html#works">Наши работы</a>
+    <a href="calculator.html">Калькулятор</a>
+    <a href="contacts.html">Контакты</a>
+  </nav>
   <div class="top-actions">
     <a class="top-ig" href="https://www.instagram.com/izyum_home/" target="_blank" rel="noopener" aria-label="Instagram @izyum_home" title="Мы в Instagram: @izyum_home">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
@@ -97,6 +106,7 @@ html[data-theme="dark"] .cat-card-credit{color:var(--mist,#B5D2D9)}
       <svg class="ic-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <svg class="ic-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
     </button>
+    <button class="btn sm desk-cta" type="button" data-lead>Оставить заявку →</button>
     <button class="dots" type="button" aria-expanded="false" aria-controls="menu" aria-label="Открыть меню"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -170,9 +180,9 @@ html[data-theme="dark"] .cat-card-credit{color:var(--mist,#B5D2D9)}
 
     <div class="pricelist-box">
       <h3 style="font-size:22px">Полный прайс-лист моделей выбранной категории</h3>
-      <p class="muted small" style="margin-top:4px">Цены указаны за базовый размер (диваны — 2400 мм, кровати — спальное место 1600 × 2000 мм). Изготавливаем в любом размере и ткани. Доступно оформление в кредит «На родныя тавары» под 4% годовых (до 36 мес.).</p>
+      <p class="muted small" style="margin-top:4px">Цены указаны за базовый размер (диваны — 2400 мм, кровати — спальное место 1600 × 2000 мм). Изготавливаем в любом размере и ткани. Доступно оформление в кредит «На сваё» под 4% годовых в грейс-период (до 5 лет, ОАО «АСБ Беларусбанк») или в рассрочку на 3 и 4 месяца.</p>
       <div class="pricelist-grid" data-pricelist-grid></div>
-      <p class="offer-disclaimer" style="margin-top:16px">* Указанные на странице цены, условия кредита «На родныя тавары» (ОАО «АСБ Беларусбанк», фиксированная ставка 4% годовых, срок до 36 месяцев, сумма до 300 базовых величин) и расчёт ежемесячных платежей носят справочно-информационный характер и <strong>не являются публичной офертой</strong> (ст. 407 ГК РБ). Наличие сертификата собственного производства РБ по конкретной модели и точный расчёт уточняйте у менеджера салона.</p>
+      <p class="offer-disclaimer" style="margin-top:16px">* Указанные на странице цены, условия кредита «На сваё» (кредитодатель — ОАО «АСБ Беларусбанк», лицензия НБ РБ № 1 от 09.06.2025 г., фиксированная ставка 4% годовых в первые 12 месяцев грейс-периода, далее СР НБ РБ + 2,75 п.п. онлайн / + 3,0 п.п. в отделении, срок до 5 лет, сумма от 200 до 50 000 BYN под неустойку), условия рассрочки на 3 и 4 месяца и расчёт ежемесячных платежей носят справочно-информационный характер и <strong>не являются публичной офертой</strong> (ст. 407 ГК РБ). Точный расчёт уточняйте у менеджера салона.</p>
     </div>
   </section>
 </div>

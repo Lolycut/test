@@ -38,7 +38,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20261102">
 <style id="izyum-v20261102">
 .hero-collage .collage-item:nth-child(3){grid-column:span 2}
 .hero-collage .collage-item:nth-child(3) img{object-position:50% 45%}
@@ -52,7 +51,7 @@
 html[data-theme="dark"] .credit-badge{color:var(--mist,#B5D2D9)}
 .credit-grid{display:grid;gap:12px;grid-template-columns:1fr}
 @media(min-width:640px){.credit-grid{grid-template-columns:repeat(2,1fr)}}
-@media(min-width:1060px){.credit-grid{grid-template-columns:repeat(4,1fr)}}
+
 .credit-card{padding:16px 18px;border-radius:var(--r-m,18px);background:var(--paper,#EFEBE6);border:1px solid var(--line,rgba(42,35,29,.12));display:grid;gap:6px;align-content:start}
 .credit-card strong{display:block;font-size:20px;font-weight:600;color:var(--teal,#095562)}
 html[data-theme="dark"] .credit-card strong{color:var(--mist,#B5D2D9)}
@@ -80,11 +79,21 @@ html[data-theme="dark"] .cat-card-credit{color:var(--mist,#B5D2D9)}
   .hero-under .btn-row .btn,.credit-block .btn-row .btn,.designer-block .btn-row .btn,.model-info .btn-row .btn{width:100%}
 }
 </style>
+<link rel="stylesheet" href="assets/css/style.css?v=20261102">
+
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FurnitureStore", "name": "ИЗЮМ", "legalName": "ООО «АЛБРО»", "taxID": "193731127", "alternateName": "IZYUM home", "url": "https://izum-home.by/", "telephone": "+375296709784", "email": "info@izum-home.by", "image": "https://izum-home.by/assets/img/og.jpg", "logo": "https://izum-home.by/assets/icons/icon-512.png", "description": "Мягкая мебель на заказ в Минске: диваны, кресла, кровати, стулья. Салон в ТЦ «Корона Дом», пав. 120.", "address": {"@type": "PostalAddress", "streetAddress": "пр-т Независимости, 154д, ТЦ «Корона Дом», павильон 120", "addressLocality": "Минск", "postalCode": "220114", "addressCountry": "BY"}, "sameAs": ["https://www.instagram.com/izyum_home/"], "priceRange": "BYN"}</script>
 </head><body>
 <a class="sr" href="#main">К содержимому</a>
 <header class="topbar">
   <a class="logo" href="index.html" aria-label="ИЗЮМ, на главную"><span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 2.5v11l8-11v11"/></svg></span><span>изюм</span></a>
+  <nav class="desk-nav" aria-label="Навигация для компьютера">
+    <a href="index.html" aria-current="page">Главная</a>
+    <a href="catalog.html">Каталог</a>
+    <a href="index.html#credit">Кредит 4%</a>
+    <a href="index.html#works">Наши работы</a>
+    <a href="calculator.html">Калькулятор</a>
+    <a href="contacts.html">Контакты</a>
+  </nav>
   <div class="top-actions">
     <a class="top-ig" href="https://www.instagram.com/izyum_home/" target="_blank" rel="noopener" aria-label="Instagram @izyum_home" title="Мы в Instagram: @izyum_home">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
@@ -98,6 +107,7 @@ html[data-theme="dark"] .cat-card-credit{color:var(--mist,#B5D2D9)}
       <svg class="ic-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <svg class="ic-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
     </button>
+    <button class="btn sm desk-cta" type="button" data-lead>Оставить заявку →</button>
     <button class="dots" type="button" aria-expanded="false" aria-controls="menu" aria-label="Открыть меню"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -142,10 +152,26 @@ html[data-theme="dark"] .cat-card-credit{color:var(--mist,#B5D2D9)}
     </div>
   </section>
   <div class="hero-under">
-    <p class="lead">Улучшаем качество жизни через создание уникального пространства. Любую модель адаптируем по длине, глубине, ткани, наполнению и опорам под вашу планировку.</p>
-    <div class="btn-row">
-      <a class="btn" href="catalog.html">Смотреть каталог</a>
-      <button class="btn ghost" type="button" data-lead="Выезд дизайнера на дом">Вызвать дизайнера</button>
+    <div class="hero-under-main">
+      <p class="lead">Улучшаем качество жизни через создание уникального пространства. Любую модель адаптируем по длине, глубине, ткани, наполнению и опорам под вашу планировку.</p>
+      <div class="btn-row">
+        <a class="btn" href="catalog.html">Смотреть каталог</a>
+        <button class="btn ghost" type="button" data-lead="Выезд дизайнера на дом">Вызвать дизайнера</button>
+      </div>
+    </div>
+    <div class="hero-metrics" aria-label="Ключевые преимущества салона ИЗЮМ">
+      <div class="hero-metric-card dark">
+        <strong class="num">300+</strong>
+        <span>фактур тканей, букле, велюра и кожи в салоне</span>
+      </div>
+      <div class="hero-metric-card">
+        <strong class="num">4% годовых</strong>
+        <span>кредит «На сваё» (грейс 12 мес. · до 5 лет)*</span>
+      </div>
+      <div class="hero-metric-card">
+        <strong class="num">до 1 см</strong>
+        <span>точность адаптации габаритов под ваш интерьер</span>
+      </div>
     </div>
   </div>
   <div class="install"><span>Установите ИЗЮМ как приложение: каталог и расчёт всегда под рукой.</span><button class="btn light" type="button" data-install>Установить</button></div>
@@ -202,53 +228,53 @@ html[data-theme="dark"] .cat-card-credit{color:var(--mist,#B5D2D9)}
 <section class="section wrap" id="credit" aria-labelledby="h-credit" style="padding-top:0">
   <div class="credit-block">
     <div class="credit-head">
-      <span class="credit-badge">Партнёрская программа с ОАО «АСБ Беларусбанк» · 4% годовых</span>
-      <h2 id="h-credit">Кредит «На родныя тавары» под 4% годовых</h2>
-      <p class="lead">К салону мягкой мебели «ИЗЮМ» подключена государственная программа льготного кредитования товаров белорусского производства. Выбирайте диван, кровать, кресло или стулья под ваш интерьер — и оплачивайте покупку частями на срок до 3 лет.</p>
+      <span class="credit-badge">Партнёрская программа с ОАО «АСБ Беларусбанк» · Грейс-период 4% годовых</span>
+      <h2 id="h-credit">Кредит «На сваё» под 4% годовых и рассрочка на 3–4 месяца</h2>
+      <p class="lead">В салоне мягкой мебели «ИЗЮМ» доступно оформление целевого потребительского кредита «На сваё» от ОАО «АСБ Беларусбанк» для приобретения товаров белорусских производителей: фиксированная ставка 4% годовых в первые 12 месяцев (грейс-период с отсрочкой по основному долгу и правом досрочного погашения без комиссий) и срок до 5 лет. Также действует внутренняя беспроцентная рассрочка на 3 и 4 месяца.</p>
     </div>
     <div class="credit-grid">
       <div class="credit-card">
-        <strong class="num">4% годовых</strong>
-        <span>Фиксированная процентная ставка на весь срок действия кредитного договора</span>
+        <strong class="num">4% годовых (12 мес.)</strong>
+        <span>Фиксированная ставка в грейс-период (первые 12 месяцев); далее — СР НБ РБ + 2,75 п.п. (12% онлайн) или + 3,0 п.п. (12,25% в отделении)</span>
       </div>
       <div class="credit-card">
-        <strong class="num">До 3 лет (36 мес.)</strong>
-        <span>Срок погашения кредита на мебель (12, 24 или 36 мес.) с досрочным погашением без комиссий</span>
+        <strong class="num">До 5 лет (60 мес.)</strong>
+        <span>Срок кредита с отсрочкой основного долга на 12 мес. и правом досрочного погашения за год целиком под 4% без комиссий</span>
       </div>
       <div class="credit-card">
-        <strong class="num">До 300 БВ (13 500 BYN)</strong>
-        <span>Максимальная сумма кредита на мебель в пределах платёжеспособности, первый взнос — от 0%</span>
+        <strong class="num">До 50 000 BYN</strong>
+        <span>Сумма кредита от 200 до 50 000 BYN в пределах платёжеспособности под неустойку (без поручителей и страховок, взнос от 0%)</span>
       </div>
       <div class="credit-card">
-        <strong>Онлайн или в отделении</strong>
-        <span>Без поручителей и страховок — по счёту-фактуре салона в М-Банкинге, Интернет-банкинге или отделении банка</span>
+        <strong>Рассрочка 3 и 4 мес.</strong>
+        <span>Альтернатива кредиту — беспроцентная рассрочка (0%) строго на 3 или 4 месяца, либо оформление кредита онлайн в М-Банкинге</span>
       </div>
     </div>
     <div class="credit-examples">
       <div class="credit-ex-head">
-        <h3>Ориентировочный расчёт ежемесячного платежа (срок 36 мес., первый взнос 0%):</h3>
-        <a class="link small" href="calculator.html?mode=rodnye">Открыть калькулятор кредита →</a>
+        <h3>Ориентировочный платёж в грейс-период 4% (срок 36 мес., первый взнос 0%):</h3>
+        <a class="link small" href="calculator.html?mode=svaye">Открыть калькулятор кредита и рассрочки →</a>
       </div>
       <div class="credit-ex-grid">
-        <a class="credit-ex-item" href="calculator.html?mode=rodnye&sum=1450&model=%D0%9A%D1%80%D0%B5%D1%81%D0%BB%D0%BE%20Minotti">
+        <a class="credit-ex-item" href="calculator.html?mode=svaye&sum=1450&model=%D0%9A%D1%80%D0%B5%D1%81%D0%BB%D0%BE%20Minotti">
           <span>Кресла (от 1 450 BYN)</span>
-          <b class="num">~43 BYN / мес*</b>
+          <b class="num">~45 BYN / мес*</b>
         </a>
-        <a class="credit-ex-item" href="calculator.html?mode=rodnye&sum=2410&model=%D0%9A%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20Alaska">
+        <a class="credit-ex-item" href="calculator.html?mode=svaye&sum=2410&model=%D0%9A%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20Alaska">
           <span>Кровати (от 2 410 BYN)</span>
-          <b class="num">~72 BYN / мес*</b>
+          <b class="num">~74 BYN / мес*</b>
         </a>
-        <a class="credit-ex-item" href="calculator.html?mode=rodnye&sum=3400&model=%D0%94%D0%B8%D0%B2%D0%B0%D0%BD%20Noah">
+        <a class="credit-ex-item" href="calculator.html?mode=svaye&sum=3400&model=%D0%94%D0%B8%D0%B2%D0%B0%D0%BD%20Noah">
           <span>Диваны (от 3 400 BYN)</span>
-          <b class="num">~101 BYN / мес*</b>
+          <b class="num">~105 BYN / мес*</b>
         </a>
       </div>
     </div>
     <div class="btn-row">
-      <a class="btn" href="calculator.html?mode=rodnye">Рассчитать кредит в калькуляторе</a>
-      <button class="btn ghost" type="button" data-lead="Кредит «На родныя тавары» (4% годовых)">Оставить заявку на счёт-фактуру</button>
+      <a class="btn" href="calculator.html?mode=svaye">Рассчитать кредит «На сваё» и рассрочку</a>
+      <button class="btn ghost" type="button" data-lead="Кредит «На сваё» (4% годовых)">Оставить заявку на счёт-фактуру</button>
     </div>
-    <p class="offer-disclaimer">* Информация об условиях кредитной программы «На родныя тавары» (кредитодатель — ОАО «АСБ Беларусбанк», лицензия НБ РБ № 1 от 09.06.2025) и предварительные расчёты ежемесячных платежей носят исключительно справочно-информационный характер и <strong>не являются публичной офертой</strong> (ст. 407 Гражданского кодекса Республики Беларусь). Кредит предоставляется на приобретение мебели белорусского производства при наличии сертификата продукции собственного производства; окончательные условия кредитования и решение о выдаче кредита определяются банком. Перечень доступных по программе моделей уточняйте у менеджеров салона «ИЗЮМ» по телефону <a class="link num" href="tel:+375296709784">+375 (29) 670-97-84</a>.</p>
+    <p class="offer-disclaimer">* Информация об условиях кредитной программы «На сваё» (кредитодатель — <strong>ОАО «АСБ Беларусбанк»</strong>, лицензия Национального банка Республики Беларусь № 1 от 09.06.2025 г., <a class="link" href="https://belarusbank.by/fizicheskim_licam/kredit/consumer/kredit-na-svaye/" target="_blank" rel="noopener">belarusbank.by</a>), условиях рассрочки на 3 и 4 месяца и предварительные расчёты ежемесячных платежей носят исключительно справочно-информационный характер и <strong>не являются публичной офертой</strong> (ст. 407 Гражданского кодекса Республики Беларусь). Кредит «На сваё» предоставляется на приобретение товаров белорусских производителей на срок до 5 лет: в первые 12 месяцев (грейс-период) действует фиксированная ставка 4% годовых и отсрочка по основному долгу, далее — переменная ставка СР НБ РБ + 2,75 п.п. (12,0% годовых при оформлении онлайн в ДБО) или СР НБ РБ + 3,0 п.п. (12,25% годовых в отделении банка). Окончательные условия кредитования и решение о выдаче кредита определяются банком. Подробности уточняйте у менеджеров салона «ИЗЮМ» по телефону <a class="link num" href="tel:+375296709784">+375 (29) 670-97-84</a>.</p>
   </div>
 </section>
 
@@ -282,10 +308,23 @@ html[data-theme="dark"] .cat-card-credit{color:var(--mist,#B5D2D9)}
       <button class="btn" type="button" data-lead="Выезд дизайнера на дом">Пригласить дизайнера на дом</button>
       <a class="btn ghost" href="tel:+375296709784">Позвонить +375 (29) 670-97-84</a>
     </div>
-    <a class="designer-media" href="catalog.html?cat=beds&model=wave" aria-label="Кровать Wave в каталоге">
-      <img src="assets/img/bed-wave-blue.webp" alt="Кровать Wave с волнистым мягким изголовьем в интерьере спальни" loading="lazy">
-      <span class="collage-tag"><span>Wave (Кровать)</span><b class="num">от 3 180 BYN</b></span>
-    </a>
+    <div class="designer-media">
+      <a class="designer-media-link" href="catalog.html?cat=beds&model=wave" aria-label="Кровать Wave в каталоге">
+        <img src="assets/img/bed-wave-blue.webp" alt="Кровать Wave с волнистым мягким изголовьем в интерьере спальни" loading="lazy">
+      </a>
+      <div class="designer-float-rating">
+        <strong class="num">Wave · от 3 180 BYN</strong>
+        <span>Спальное место и высота изголовья под заказ</span>
+      </div>
+      <div class="designer-cutout" aria-label="Параметры индивидуальной адаптации">
+        <span>Шаг размера 1 см</span>
+        <span>300+ фактур обивки</span>
+        <span>Подбор жёсткости</span>
+        <span>Массив и металл</span>
+        <span>Замер на дому</span>
+        <span>Кредит 4% до 3 лет*</span>
+      </div>
+    </div>
   </div>
 </section>
 
