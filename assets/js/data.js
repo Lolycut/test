@@ -275,41 +275,42 @@ IZYUM.PRICELIST = [
 IZYUM.CALC = {
   programs: [
     {
-      id: 'rodnye',
-      name: 'Кредит «На родныя тавары» · 4%',
-      shortName: 'Кредит «На родныя тавары» (4% годовых)',
+      id: 'svaye',
+      name: 'Кредит «На сваё» · 4%',
+      shortName: 'Кредит «На сваё» (4% в грейс-период 12 мес.)',
       rate: 0.04,
-      maxBV: 300,
-      bvAmount: 45,
-      maxLoanSum: 13500,
+      rateGrace: 0.04,
+      rateAfterOnline: 0.12,   /* СР НБ РБ (9,25%) + 2,75 п.п. при оформлении онлайн в ДБО */
+      rateAfterBranch: 0.1225, /* СР НБ РБ (9,25%) + 3,0 п.п. при оформлении в отделении банка */
+      graceMonths: 12,
+      minLoanSum: 200,
+      maxLoanSum: 50000,       /* до 50 000 BYN под неустойку для граждан РБ до 60 лет */
       defTerm: 36,
       defFirst: 0,
       terms: [
-        { months: 12, label: '12 мес (1 год)' },
+        { months: 12, label: '12 мес (грейс 4%)' },
         { months: 24, label: '24 мес (2 года)' },
-        { months: 36, label: '36 мес (3 года)' }
+        { months: 36, label: '36 мес (3 года)' },
+        { months: 48, label: '48 мес (4 года)' },
+        { months: 60, label: '60 мес (5 лет)' }
       ]
     },
     {
       id: 'installment',
-      name: 'Рассрочка',
-      shortName: 'Рассрочка',
+      name: 'Рассрочка (3–4 мес)',
+      shortName: 'Рассрочка (3–4 мес.)',
       rate: 0,
-      defTerm: 6,
+      defTerm: 4,
       defFirst: 20,
       terms: [
-        { months: 3,  over: 0,    label: '3 мес' },
-        { months: 6,  over: 0,    label: '6 мес' },
-        { months: 12, over: 0.08, label: '12 мес' },
-        { months: 24, over: 0.16, label: '24 мес' }
+        { months: 3, over: 0, label: '3 мес' },
+        { months: 4, over: 0, label: '4 мес' }
       ]
     }
   ],
   terms: [
-    { months: 3,  over: 0 },
-    { months: 6,  over: 0 },
-    { months: 12, over: 0.08 },
-    { months: 24, over: 0.16 }
+    { months: 3, over: 0 },
+    { months: 4, over: 0 }
   ],
   delivery: [
     { id: 'minsk',  name: 'Минск',               price: 40 },
@@ -320,28 +321,62 @@ IZYUM.CALC = {
   stairsPerFloor: 8
 };
 
-/* Расчёт кредита «На родныя тавары» (ОАО «АСБ Беларусбанк», 4% годовых, до 36 мес. на мебель):
-   основной долг погашается ежемесячно равными долями, проценты начисляются на остаток задолженности.
-   Носит справочно-информационный характер и не является публичной офертой. */
-IZYUM.calcRodnye = function (loanSum, months) {
+/* Расчёт кредита «На сваё» (ОАО «АСБ Беларусбанк», срок до 5 лет / 60 мес.):
+   - Грейс-период (первые 12 месяцев): фиксированная ставка 4% годовых + отсрочка по основному долгу на 12 мес.
+   - По истечении грейс-периода (с 13-го месяца): переменная ставка СР НБ РБ (9,25%) + 2,75 п.п. = 12,0% годовых (при подаче заявки через каналы ДБО онлайн) либо СР НБ РБ + 3,0 п.п. = 12,25% годовых (в отделении банка).
+   - Досрочное погашение (полное или частичное) — без ограничений и комиссий (при погашении за 12 мес. действует только ставка 4% годовых).
+   Расчёт носит справочно-информационный характер и не является публичной офертой (ст. 407 ГК РБ). */
+IZYUM.calcSvaye = function (loanSum, months, channel) {
   var L = Math.max(0, +loanSum || 0);
   var m = Math.max(1, +months || 36);
-  var rate = 0.04;
-  var over = Math.round(L * (rate / 12) * (m + 1) / 2);
+  var rateGrace = 0.04;
+  var rateAfter = channel === 'branch' ? 0.1225 : 0.12;
+  var graceM = Math.min(m, 12);
+  var remM = Math.max(0, m - 12);
+
+  /* 1. Равномерное погашение основного долга (L / m в месяц с 1-го месяца):
+        первые 12 мес. под 4% годовых на остаток, с 13-го мес. под 12% (онлайн) / 12,25% (отделение) */
+  var overGraceEven = L > 0 ? (L * (rateGrace / 12) * (graceM * m - (graceM * (graceM - 1)) / 2) / m) : 0;
+  var remPrincipal = (L > 0 && remM > 0) ? (L * remM / m) : 0;
+  var overAfterEven = remPrincipal > 0 ? (remPrincipal * (rateAfter / 12) * (remM + 1) / 2) : 0;
+  var over = Math.round(overGraceEven + overAfterEven);
   var monthlyAvg = L > 0 ? Math.ceil((L + over) / m) : 0;
-  var firstMonth = L > 0 ? Math.ceil((L / m) + L * (rate / 12)) : 0;
-  var lastMonth = L > 0 ? Math.ceil((L / m) + (L / m) * (rate / 12)) : 0;
+  var graceMonthly = L > 0 ? Math.ceil(((L * graceM / m) + overGraceEven) / graceM) : 0;
+  var afterMonthly = (remM > 0 && L > 0) ? Math.ceil((remPrincipal + overAfterEven) / remM) : 0;
+  var firstMonth = L > 0 ? Math.ceil((L / m) + L * (rateGrace / 12)) : 0;
+  var lastRate = remM > 0 ? rateAfter : rateGrace;
+  var lastMonth = L > 0 ? Math.ceil((L / m) + (L / m) * (lastRate / 12)) : 0;
+
+  /* 2. График с полной 12-месячной отсрочкой основного долга по договору банка:
+        в 1–12 мес. уплачиваются только проценты 4% годовых, основной долг гасится равными долями с 13-го по m-й месяц */
+  var graceInterestOnly = L > 0 ? Math.ceil(L * (rateGrace / 12)) : 0;
+  var overGraceDefer = L * rateGrace * (graceM / 12);
+  var overAfterDefer = remM > 0 ? (L * (rateAfter / 12) * (remM + 1) / 2) : 0;
+  var overDefer = Math.round(overGraceDefer + overAfterDefer);
+  var afterMonthlyDefer = (remM > 0 && L > 0) ? Math.ceil((L + overAfterDefer) / remM) : 0;
+
   return {
     loan: L,
     months: m,
-    rate: rate,
+    rate: rateGrace,
+    rateGrace: rateGrace,
+    rateAfter: rateAfter,
     over: over,
+    overGrace: Math.round(overGraceEven),
+    overAfter: Math.round(overAfterEven),
     monthly: monthlyAvg,
+    graceMonthly: graceMonthly,
+    afterMonthly: afterMonthly,
+    graceInterestOnly: graceInterestOnly,
+    afterMonthlyDefer: afterMonthlyDefer,
+    overDefer: overDefer,
     firstMonth: firstMonth,
     lastMonth: lastMonth,
     total: L + over
   };
 };
+/* Обратная совместимость для вызовов IZYUM.calcRodnye */
+IZYUM.calcRodnye = IZYUM.calcSvaye;
 
 IZYUM.fmt = function (n) {
   return Math.round(n).toLocaleString('ru-RU').replace(/,/g, ' ');

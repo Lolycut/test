@@ -99,8 +99,8 @@
             '<span class="cat-card-price num">' + pText + '</span>' +
           '</div>' +
           '<span class="cat-card-dim">База: ' + (m.baseDim || 'индивидуально') + '</span>' +
-          ((m.price && m.price > 0 && IZYUM.calcRodnye) ? (
-            '<a class="cat-card-credit num" href="calculator.html?mode=rodnye&sum=' + m.price + '&model=' + encodeURIComponent(m.kind.charAt(0) + m.kind.slice(1).toLowerCase() + ' ' + m.name) + '" title="Предварительный расчёт кредита «На родныя тавары» под 4% на 36 мес. (не является публичной офертой)">Кредит «На родныя тавары» 4%: ~' + IZYUM.fmt(IZYUM.calcRodnye(m.price, 36).monthly) + ' BYN/мес*</a>'
+          ((m.price && m.price > 0 && IZYUM.calcSvaye) ? (
+            '<a class="cat-card-credit num" href="calculator.html?mode=svaye&sum=' + m.price + '&model=' + encodeURIComponent(m.kind.charAt(0) + m.kind.slice(1).toLowerCase() + ' ' + m.name) + '" title="Предварительный расчёт кредита «На сваё» под 4% в грейс-период 12 мес. при сроке 36 мес. (не является публичной офертой)">Кредит «На сваё» 4%: ~' + IZYUM.fmt(IZYUM.calcSvaye(m.price, 36).graceMonthly) + ' BYN/мес*</a>'
           ) : '') +
           '<p class="cat-card-desc">' + m.note + '</p>' +
           '<div class="cat-card-tags">' + tagsHtml + '</div>' +
@@ -125,7 +125,7 @@
           '<span class="pl-price num">' + pStr + '</span>' +
         '</div>' +
         '<div class="pricelist-btm">' +
-          '<span class="pl-sub">' + item.kind + ' · ' + item.dim + ((item.price && item.price > 0 && IZYUM.calcRodnye) ? (' · <a class="link num" href="calculator.html?mode=rodnye&sum=' + item.price + '&model=' + encodeURIComponent(item.kind + ' ' + item.name) + '">~' + IZYUM.fmt(IZYUM.calcRodnye(item.price, 36).monthly) + ' BYN/мес в кредит 4%*</a>') : '') + '</span>' +
+          '<span class="pl-sub">' + item.kind + ' · ' + item.dim + ((item.price && item.price > 0 && IZYUM.calcSvaye) ? (' · <a class="link num" href="calculator.html?mode=svaye&sum=' + item.price + '&model=' + encodeURIComponent(item.kind + ' ' + item.name) + '">~' + IZYUM.fmt(IZYUM.calcSvaye(item.price, 36).graceMonthly) + ' BYN/мес в кредит «На сваё» 4%*</a>') : '') + '</span>' +
           '<button type="button" class="btn ghost sm" data-lead="' + leadTitle + '">Оставить заявку</button>' +
         '</div>' +
       '</div>';
@@ -217,11 +217,11 @@
     var f = m.tags ? m.tags.slice() : ['Индивидуальный размер', 'Выбор ткани с дизайнером'];
     if (el.facts) el.facts.innerHTML = f.map(function (t) { return '<li>' + t + '</li>'; }).join('');
     if (el.credit) {
-      if (m.price && m.price > 0 && IZYUM.calcRodnye) {
-        var cr = IZYUM.calcRodnye(m.price, 36);
+      if (m.price && m.price > 0 && IZYUM.calcSvaye) {
+        var cr = IZYUM.calcSvaye(m.price, 36);
         var mTitle = m.kind.charAt(0) + m.kind.slice(1).toLowerCase() + ' ' + m.name;
         el.credit.hidden = false;
-        el.credit.innerHTML = 'Кредит «На родныя тавары» 4% (до 36 мес.): <strong class="num">~' + IZYUM.fmt(cr.monthly) + ' BYN/мес*</strong> · <a class="link" href="calculator.html?mode=rodnye&sum=' + m.price + '&model=' + encodeURIComponent(mTitle) + '">Рассчитать в калькуляторе</a>';
+        el.credit.innerHTML = 'Кредит «На сваё» 4% (грейс 12 мес., до 5 лет): <strong class="num">~' + IZYUM.fmt(cr.graceMonthly) + ' BYN/мес*</strong> · <a class="link" href="calculator.html?mode=svaye&sum=' + m.price + '&model=' + encodeURIComponent(mTitle) + '">Рассчитать в калькуляторе</a>';
       } else {
         el.credit.hidden = true;
         el.credit.innerHTML = '';
